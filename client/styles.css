@@ -1,0 +1,89 @@
+body {
+  height: 100vh;  
+}
+.main {
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.navbar-inverse {
+    background-color: #024F6D;
+
+}
+.navbar-nav>.active>a {
+    background-color: #d9534f !important;
+}
+a:hover {
+    color: #d9534f !important;
+}
+
+a {
+    color: white;
+}
+.navbar {
+    margin-bottom: 0px !important;  
+} 
+
+* {
+    margin: 0;
+    padding: 0;	
+  }
+  
+  #prompt-container {
+    font-family: Courier New, Courier, monospace;
+    font-size: 24px;
+    letter-spacing: 3px;
+  }
+  
+  #characterHighlight {
+    position: absolute;
+    margin-top: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: yellow;
+  }
+
+  .red-block {
+    background-color: #d9534f !important;
+  }
+  
+  .keyboard-container {
+    margin-top: 200px;
+  }
+  
+  #targetLetter {
+    font-size: 38px;  
+  }
+  
+  .keys-row {
+    margin-top: 20px;
+    padding: 5px 0;
+  }
+  
+  #feedback {
+    font-size: 20px;
+  }
+  .glyphicon-ok {
+    color: #1DA237
+  }
+  
+  .glyphicon-remove {
+    color : #CD2626
+  }
+
+  .wpmHighlight {
+    background-color: yellow;
+    color: block;
+    transition: ease-in 3s;
+    font-size: 25px;
+  }
+  
+  .highlights {
+    background-color: #024F6D;
+    color: white;
+  }
+
+  #noTopMargin {
+    margin-top: 20px !important;
+  }
