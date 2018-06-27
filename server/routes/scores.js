@@ -7,12 +7,12 @@ let router = express.Router();
 //post score
 router.post('/', (req,res) => {
     console.log('*** Posting Score: req.body ***');
-    console.log(req.body);
+    // console.log(req.body);
     console.log('*** request name: req.body.name ***');
-    console.log(req.body.data.name);
+    // console.log(req.body.name);
 
-    // console.log('Testing! req.body.text=' + req.body.text);
-    database.CreateScore(req.body.data.name,req.body.data.wpm)
+    
+    database.CreateScore(req.body.data.name, req.body.data.wpm)
     .then((results) => {
         console.log('result of creating a score:');
         console.log(results);

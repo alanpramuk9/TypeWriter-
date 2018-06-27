@@ -33,6 +33,6 @@ app.use(stateRouting);
 //     console.log(`Server listening on port ${port}`);
 // });
 // listening application on port 8000  
-var server = app.listen(8000, function(){  
+var server = app.listen(5500, function(){  
     console.log('Server Listening on port ' + server.address().port);  
 }); 

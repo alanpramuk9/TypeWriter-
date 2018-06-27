@@ -1,8 +1,17 @@
 body {
   height: 100vh;  
 }
+p {
+  font-size: 1.1em;
+}
+
+#prompt-container {
+  font-family: Courier New, Courier, monospace;
+  font-size: 24px;
+  letter-spacing: 3px;
+}
 .main {
-  height: 75vh;
+  height: 65vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -11,11 +20,31 @@ body {
     background-color: #024F6D;
 
 }
-.navbar-nav>.active>a {
-    background-color: #d9534f !important;
+.btn-danger {
+  color: #fff;
+  background-color: #024F6D;
+  border-color: #024F6D;
 }
-a:hover {
-    color: #d9534f !important;
+
+.btn-success {
+  color: #fff;
+  background-color: #024F6D;
+  border-color: #024F6D;
+}
+
+.navbar-nav>.active>a {
+    background-color: #024F6D !important;
+    border-radius: 5px;
+    color:#d9534f !important;
+    font-weight: bold !important
+}
+li a:hover {
+    /* color: #d9534f !important; */
+    text-decoration: underline !important;
+    text-decoration-color: #d9534f !important;
+    text-decoration-style: double;
+    
+   
 }
 
 a {
@@ -38,10 +67,26 @@ a {
   
   #characterHighlight {
     position: absolute;
-    margin-top: 10px;
-    width: 15px;
-    height: 15px;
+    margin-top: 0px;
+    width: 16px;
+    height: 32px;
     background-color: yellow;
+    padding-left: 0;
+    opacity: .5;
+    margin-left: 19.5%;
+  }
+
+  #sentence {
+    margin-left:20%;
+    
+
+  }
+  .containermain {
+
+  }
+  .sentenceContainer {
+    
+    
   }
 
   .red-block {
@@ -54,11 +99,13 @@ a {
   
   #targetLetter {
     font-size: 38px;  
+    display: block;
+    bottom: 15px;
   }
   
   .keys-row {
-    margin-top: 20px;
-    padding: 5px 0;
+    margin-top: 14px;
+    padding: 13px 0;
   }
   
   #feedback {
@@ -85,5 +132,68 @@ a {
   }
 
   #noTopMargin {
-    margin-top: 20px !important;
+    margin-top: 0px !important;
   }
+  
+  .modal-header {
+    background-color: #024F6D;
+    color: white;
+  }
+  .modal-footer {
+    background-color: #F7f7f7;
+
+  }
+  .spacebar {
+    width:50%;
+    margin: 0 auto;
+  }
+
+  li a.active:hover {
+    color: white;
+  }
+
+  #leaderboardContainer > p {
+    text-align: center;
+
+  }
+
+  #rank {
+    font-size: 1.1em
+  }
+  .glyphicon-user,  .glyphicon-log-in {
+    font-size: 15px;
+  }
+  a.sm {
+    font-size:15px !important;
+  }
+  h5 {
+    font-size: 1.25em !important;
+    color:  #024F6D !important;
+  }
+
+  nav.navbar.navbar-inverse {
+    box-shadow: 0 3px 4px 0px rgba(0,0,0,0.25);
+    height: 74px;
+    border-radius: 0px;
+    border-color: transparent !important; 
+  }
+  a {
+    color: white !important;
+    font-size: 18px;
+    padding-top: 23px;
+  }
+ #centerNav {
+  margin-top: 9px;
+ }
+ button {
+   font-size: 1.25em;
+ }
+
+ buttonidea {
+   color: #d9534f;
+   padding: 10px 15px;
+   background-color: #fff;
+   /* opacity: .8; */
+   border-color: #d9534f;
+   border: 1.7px solid;
+ }

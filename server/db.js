@@ -12,7 +12,7 @@ let connection = mysql.createConnection(
 
 //get all the scores 
 let getScores = () => {
-    console.log('about to make promise with database');
+    console.log('GET: about to make promise with database');
     //connection.connect();
     return new Promise((resolve, reject) => {
         connection.query(`select * from leaderboard`, (err, results, fields) => {

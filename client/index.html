@@ -1,226 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Just My Type</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	 crossorigin="anonymous">
+        crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <!-- navigation bar -->
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html"> Just My Type</a>
-          </div>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="#">Leaderboard</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          </ul>
-        </div>
-      </nav>
-    <!-- stat area -->
-      <div style="width:100%; height: 150px; display: flex; flex-direction: column; background-color:#DDDDDD">
-          <div style="display:flex; justify-content: center; margin: 15px 0px;">
-              <h4 style="margin-top:10px; text-align: center">Start Typing To Begin!</h4>
-              <button class="btn btn-success" style="margin-left: 30px" id="reset">Play again</button>
-              <button type="button" class="btn btn-danger" style="margin-left: 30px" data-toggle="modal" data-target="#myModal">Submit Your Score!</button>
+        <div class="container-fluid" style="" id='ce nterNav'>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html"> Just My Type</a>
             </div>
-            <!-- submit your score modal  -->
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Submit Your Score</h4>
-                        </div>
-                        <div class="modal-body">
-                            
-                                <div class="form-group">
-                                        <label for="name">Name:</label>
-                                        <input type="text" class="form-control" id="name">
-                                      </div>
-                                <div class="wpmScoreModal">${wordsPerMinute}</div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-default" id="submit">Submit</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="about.html">About</a>
+                </li>
+                <li>
+                    <a href="leaderboard.html">Leaderboard</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="sm" href="#">
+                        <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                </li>
+                <li>
+                    <a class="sm" href="#">
+                        <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- stat area -->
+    <div style="width:100%; height: 150px;  background-color:#DDDDDD; margin-bottom:30px;">
+        <!-- <div style="width:100%; height: 150px; display: flex; flex-direction: column; background-color:#DDDDDD; margin-bottom:30px;"> -->
+        <div style="display:flex; justify-content: center; position: relative; top: 42px;">
+            <!-- <h4 style="margin-top:10px; text-align: center">Start Typing To Begin!</h4> -->
+            <button class="btn btn-success" style="margin-left: 30px" id="reset">Play again</button>
+            <button type="button" class="btn btn-danger" style="margin-left: 30px" data-toggle="modal" data-target="#myModal">Submit Your Score</button>
+        </div>
+        <!-- submit your score modal  -->
+        <div style="display: flex; justify-content: space-between">
+            <div class="stats" style="display:flex; justify-content: space-around; height:75px; width: 35%">
+                <div class="timercontainer" style="display:flex; flex-direction: column">
+                    <h5 style="text-decoration: underline">Time: </h5>
+                    <div id="timer"></div>
+                </div>
+                <div class="timercontainer" style="display:flex; flex-direction: column">
+                    <h5 style="text-decoration: underline">WPM: </h5>
+                    <div id="wpm"> </div>
+                </div>
+                <div class="timercontainer" style="display:flex; flex-direction: column">
+                    <h5 style="text-decoration: underline">Accuracy (characters): </h5>
+                    <div>
+                        <span id="accuracy"> </span>
+                        <span>%</span>
                     </div>
                 </div>
-          <div class="stats" style="display:flex; justify-content: space-around; height:75px;">
-            <div class="timercontainer" style="display:flex; flex-direction: column">
-                <h5 style="text-decoration: underline">Time: </h5>
-                <div id="timer"></div>
             </div>
-            <div class="timercontainer" style="display:flex; flex-direction: column">
-                <h5 style="text-decoration: underline">WPM: </h5>
-                <div id="wpm"> </div>
-            </div>
-            <div class="timercontainer" style="display:flex; flex-direction: column">
-                    <h5 style="text-decoration: underline">Mistakes: </h5>
-                    <div id="mistakes"> </div>
-            </div>
-            <div class="timercontainer" style="display:flex; flex-direction: column">
+            <div class="stats" style="display:flex; justify-content: space-around;  height:75px; width: 35%">
+                <div class="timercontainer" style="display:flex; flex-direction: column">
                     <h5 style="text-decoration: underline">Characters: </h5>
                     <div id="characters"> </div>
-            </div>
-            <div class="timercontainer" style="display:flex; flex-direction: column">
+                </div>
+                <div class="timercontainer" style="display:flex; flex-direction: column">
                     <h5 style="text-decoration: underline">Words: </h5>
                     <div id="wordCount"> </div>
+                </div>
+                <div class="timercontainer" style="display:flex; flex-direction: column">
+                    <h5 style="text-decoration: underline">Mistakes: </h5>
+                    <div id="mistakes"> </div>
+                </div>
+                
             </div>
-            <div class="timercontainer" style="display:flex; flex-direction: column">
-                    <h5 style="text-decoration: underline">Accuracy (characters): </h5>
-                    <div><span id="accuracy"> </span><span>%</span></div>
             </div>
-          
-          
-          
         </div>
-      </div>
-    
-      <div class="container main" id="target">
+        <div class="containermain main" id="target">
             <div class="row col-md-12" id="prompt-container">
-                <div class="row col-xs-12" id="yellow-block"></div>
-                <div class="row col-lg-12" id="sentence">
-                    
+                <div class="row col-xs-12" id="characterHighlight"></div>
+                <div class="row col-12" id="sentence">
                 </div>
                 <div class="row col-lg-12 text-center" id="feedback">
-                    
                 </div>
                 <div class="row col-lg-12 text-center" id="target-letter">
-    
                 </div>
             </div>
             <div class="keyboardall">
-            <div class="text-center keyboard-container" id="keyboard-upper-container">
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="126">~</span>
-                    <span class="well well-sm key" id="33">!</span>
-                    <span class="well well-sm key" id="64">@</span>
-                    <span class="well well-sm key" id="35">#</span>
-                    <span class="well well-sm key" id="36">$</span>
-                    <span class="well well-sm key" id="37">%</span>
-                    <span class="well well-sm key" id="94">^</span>
-                    <span class="well well-sm key" id="38">&</span>
-                    <span class="well well-sm key" id="42">*</span>
-                    <span class="well well-sm key" id="40">(</span>
-                    <span class="well well-sm key" id="41">)</span>
-                    <span class="well well-sm key" id="95">_</span>
-                    <span class="well well-sm key" id="43">+</span>
+                <div class="text-center keyboard-container" id="keyboard-upper-container">
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="126">~</span>
+                        <span class="well well-md key" id="33">!</span>
+                        <span class="well well-md key" id="64">@</span>
+                        <span class="well well-md key" id="35">#</span>
+                        <span class="well well-md key" id="36">$</span>
+                        <span class="well well-md key" id="37">%</span>
+                        <span class="well well-md key" id="94">^</span>
+                        <span class="well well-md key" id="38">&</span>
+                        <span class="well well-md key" id="42">*</span>
+                        <span class="well well-md key" id="40">(</span>
+                        <span class="well well-md key" id="41">)</span>
+                        <span class="well well-md key" id="95">_</span>
+                        <span class="well well-md key" id="43">+</span>
+                    </div>
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="81">Q</span>
+                        <span class="well well-md key" id="87">W</span>
+                        <span class="well well-md key" id="69">E</span>
+                        <span class="well well-md key" id="82">R</span>
+                        <span class="well well-md key" id="84">T</span>
+                        <span class="well well-md key" id="89">Y</span>
+                        <span class="well well-md key" id="85">U</span>
+                        <span class="well well-md key" id="73">I</span>
+                        <span class="well well-md key" id="79">O</span>
+                        <span class="well well-md key" id="80">P</span>
+                        <span class="well well-md key" id="123">{</span>
+                        <span class="well well-md key" id="125">}</span>
+                        <span class="well well-md key" id="124">|</span>
+                    </div>
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="65">A</span>
+                        <span class="well well-md key" id="83">S</span>
+                        <span class="well well-md key" id="68">D</span>
+                        <span class="well well-md key" id="70">F</span>
+                        <span class="well well-md key" id="71">G</span>
+                        <span class="well well-md key" id="72">H</span>
+                        <span class="well well-md key" id="74">J</span>
+                        <span class="well well-md key" id="75">K</span>
+                        <span class="well well-md key" id="76">L</span>
+                        <span class="well well-md key" id="58">:</span>
+                        <span class="well well-md key" id="34">"</span>
+                    </div>
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="90">Z</span>
+                        <span class="well well-md key" id="88">X</span>
+                        <span class="well well-md key" id="67">C</span>
+                        <span class="well well-md key" id="86">V</span>
+                        <span class="well well-md key" id="66">B</span>
+                        <span class="well well-md key" id="78">N</span>
+                        <span class="well well-md key" id="77">M</span>
+                        <span class="well well-md key" id="60">&#60</span>
+                        <span class="well well-md key" id="62">&#62</span>
+                        <span class="well well-md key" id="63">?</span>
+                    </div>
                 </div>
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="81">Q</span>
-                    <span class="well well-sm key" id="87">W</span>
-                    <span class="well well-sm key" id="69">E</span>
-                    <span class="well well-sm key" id="82">R</span>
-                    <span class="well well-sm key" id="84">T</span>
-                    <span class="well well-sm key" id="89">Y</span>
-                    <span class="well well-sm key" id="85">U</span>
-                    <span class="well well-sm key" id="73">I</span>
-                    <span class="well well-sm key" id="79">O</span>
-                    <span class="well well-sm key" id="80">P</span>
-                    <span class="well well-sm key" id="123">{</span>
-                    <span class="well well-sm key" id="125">}</span>
-                    <span class="well well-sm key" id="124">|</span>
+                <div class="text-center keyboard-container" id="keyboard-lower-container">
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="96">`</span>
+                        <span class="well well-md key" id="49">1</span>
+                        <span class="well well-md key" id="50">2</span>
+                        <span class="well well-md key" id="51">3</span>
+                        <span class="well well-md key" id="52">4</span>
+                        <span class="well well-md key" id="53">5</span>
+                        <span class="well well-md key" id="54">6</span>
+                        <span class="well well-md key" id="55">7</span>
+                        <span class="well well-md key" id="56">8</span>
+                        <span class="well well-md key" id="57">9</span>
+                        <span class="well well-md key" id="48">0</span>
+                        <span class="well well-md key" id="45">-</span>
+                        <span class="well well-md key" id="61">=</span>
+                    </div>
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="113">q</span>
+                        <span class="well well-md key" id="119">w</span>
+                        <span class="well well-md key" id="101">e</span>
+                        <span class="well well-md key" id="114">r</span>
+                        <span class="well well-md key" id="116">t</span>
+                        <span class="well well-md key" id="121">y</span>
+                        <span class="well well-md key" id="117">u</span>
+                        <span class="well well-md key" id="105">i</span>
+                        <span class="well well-md key" id="111">o</span>
+                        <span class="well well-md key" id="112">p</span>
+                        <span class="well well-md key" id="91">[</span>
+                        <span class="well well-md key" id="93">]</span>
+                        <span class="well well-md key" id="92">\</span>
+                    </div>
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="97">a</span>
+                        <span class="well well-md key" id="115">s</span>
+                        <span class="well well-md key" id="100">d</span>
+                        <span class="well well-md key" id="102">f</span>
+                        <span class="well well-md key" id="103">g</span>
+                        <span class="well well-md key" id="104">h</span>
+                        <span class="well well-md key" id="106">j</span>
+                        <span class="well well-md key" id="107">k</span>
+                        <span class="well well-md key" id="108">l</span>
+                        <span class="well well-md key" id="59">;</span>
+                        <span class="well well-md key" id="39">'</span>
+                    </div>
+                    <div class="row col-lg-12 keys-row">
+                        <span class="well well-md key" id="122">z</span>
+                        <span class="well well-md key" id="120">x</span>
+                        <span class="well well-md key" id="99">c</span>
+                        <span class="well well-md key" id="118">v</span>
+                        <span class="well well-md key" id="98">b</span>
+                        <span class="well well-md key" id="110">n</span>
+                        <span class="well well-md key" id="109">m</span>
+                        <span class="well well-md key" id="44">,</span>
+                        <span class="well well-md key" id="46">.</span>
+                        <span class="well well-md key" id="47">/</span>
+                    </div>
                 </div>
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="65">A</span>
-                    <span class="well well-sm key" id="83">S</span>
-                    <span class="well well-sm key" id="68">D</span>
-                    <span class="well well-sm key" id="70">F</span>
-                    <span class="well well-sm key" id="71">G</span>
-                    <span class="well well-sm key" id="72">H</span>
-                    <span class="well well-sm key" id="74">J</span>
-                    <span class="well well-sm key" id="75">K</span>
-                    <span class="well well-sm key" id="76">L</span>
-                    <span class="well well-sm key" id="58">:</span>
-                    <span class="well well-sm key" id="34">"</span>
+                <div class="row col-lg-12 text-center keys-row" id="noTopMargin">
+                    <div class="well well-md key spacebar" id="32">Space</div>
                 </div>
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="90">Z</span>
-                    <span class="well well-sm key" id="88">X</span>
-                    <span class="well well-sm key" id="67">C</span>
-                    <span class="well well-sm key" id="86">V</span>
-                    <span class="well well-sm key" id="66">B</span>
-                    <span class="well well-sm key" id="78">N</span>
-                    <span class="well well-sm key" id="77">M</span>
-                    <span class="well well-sm key" id="60">&#60</span>
-                    <span class="well well-sm key" id="62">&#62</span>
-                    <span class="well well-sm key" id="63">?</span>
-                </div>
-            </div>
-            <div class="text-center keyboard-container" id="keyboard-lower-container">
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="96">`</span>
-                    <span class="well well-sm key" id="49">1</span>
-                    <span class="well well-sm key" id="50">2</span>
-                    <span class="well well-sm key" id="51">3</span>
-                    <span class="well well-sm key" id="52">4</span>
-                    <span class="well well-sm key" id="53">5</span>
-                    <span class="well well-sm key" id="54">6</span>
-                    <span class="well well-sm key" id="55">7</span>
-                    <span class="well well-sm key" id="56">8</span>
-                    <span class="well well-sm key" id="57">9</span>
-                    <span class="well well-sm key" id="48">0</span>
-                    <span class="well well-sm key" id="45">-</span>
-                    <span class="well well-sm key" id="61">=</span>
-                </div>
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="113">q</span>
-                    <span class="well well-sm key" id="119">w</span>
-                    <span class="well well-sm key" id="101">e</span>
-                    <span class="well well-sm key" id="114">r</span>
-                    <span class="well well-sm key" id="116">t</span>
-                    <span class="well well-sm key" id="121">y</span>
-                    <span class="well well-sm key" id="117">u</span>
-                    <span class="well well-sm key" id="105">i</span>
-                    <span class="well well-sm key" id="111">o</span>
-                    <span class="well well-sm key" id="112">p</span>
-                    <span class="well well-sm key" id="91">[</span>
-                    <span class="well well-sm key" id="93">]</span>
-                    <span class="well well-sm key" id="92">\</span>
-                </div>
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="97">a</span>
-                    <span class="well well-sm key" id="115">s</span>
-                    <span class="well well-sm key" id="100">d</span>
-                    <span class="well well-sm key" id="102">f</span>
-                    <span class="well well-sm key" id="103">g</span>
-                    <span class="well well-sm key" id="104">h</span>
-                    <span class="well well-sm key" id="106">j</span>
-                    <span class="well well-sm key" id="107">k</span>
-                    <span class="well well-sm key" id="108">l</span>
-                    <span class="well well-sm key" id="59">;</span>
-                    <span class="well well-sm key" id="39">'</span>
-                </div>
-                <div class="row col-lg-12 keys-row">
-                    <span class="well well-sm key" id="122">z</span>
-                    <span class="well well-sm key" id="120">x</span>
-                    <span class="well well-sm key" id="99">c</span>
-                    <span class="well well-sm key" id="118">v</span>
-                    <span class="well well-sm key" id="98">b</span>
-                    <span class="well well-sm key" id="110">n</span>
-                    <span class="well well-sm key" id="109">m</span>
-                    <span class="well well-sm key" id="44">,</span>
-                    <span class="well well-sm key" id="46">.</span>
-                    <span class="well well-sm key" id="47">/</span>
-                </div>
-            </div>
-            <div class="row col-lg-12 text-center keys-row" id="noTopMargin">
-                <div class="well well-sm key" id="32">Space</div>
             </div>
         </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Submit Your Score</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+                        <div id="wpmScoreModal">Your WPM: </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="submit">Submit</button>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -229,12 +246,12 @@
 
 
 
+        <!--Javascript Dependencies Below -->
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
-
-
-    <!--Javascript Dependencies Below -->
-	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-	<script src="app.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="app.js"></script>
 
 </body>
+
 </html>
