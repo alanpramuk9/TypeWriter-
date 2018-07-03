@@ -14,7 +14,7 @@
 <body>
     <!-- navigation bar -->
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid" style="" id='ce nterNav'>
+        <div class="container-fluid" style="" id='centerNav'>
             <div class="navbar-header">
                 <a class="navbar-brand" href="index.html"> Just My Type</a>
             </div>
@@ -29,7 +29,7 @@
                     <a href="leaderboard.html">Leaderboard</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <!-- <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a class="sm" href="#">
                         <span class="glyphicon glyphicon-user"></span> Sign Up</a>
@@ -38,7 +38,7 @@
                     <a class="sm" href="#">
                         <span class="glyphicon glyphicon-log-in"></span> Login</a>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </nav>
     <!-- stat area -->
@@ -61,7 +61,7 @@
                     <div id="wpm"> </div>
                 </div>
                 <div class="timercontainer" style="display:flex; flex-direction: column">
-                    <h5 style="text-decoration: underline">Accuracy (characters): </h5>
+                    <h5 style="text-decoration: underline">Accuracy: </h5>
                     <div>
                         <span id="accuracy"> </span>
                         <span>%</span>
@@ -215,8 +215,15 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div id="wpmScoreModal">Your WPM: </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="submitIt">Submit</button> -->
 
-
+        </div>
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog modal-sm">
@@ -233,7 +240,7 @@
                         <div id="wpmScoreModal">Your WPM: </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" id="submit">Submit</button>
+                        <button type="button" class="btn btn-danger" id="submitIt">Submit</button>
 
                     </div>
                 </div>
@@ -248,7 +255,7 @@
 
         <!--Javascript Dependencies Below -->
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="app.js"></script>
 

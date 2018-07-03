@@ -4,11 +4,31 @@ body {
 p {
   font-size: 1.1em;
 }
+.about > h4 {
+  color: white;
+}
 
+/* #leaderboardContainer {
+  min-height: 70vh; 
+  margin: 30px auto;
+   padding:15px;   
+   border-radius: 5px; 
+   background-color: #024F6D; 
+   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+} */
 #prompt-container {
   font-family: Courier New, Courier, monospace;
   font-size: 24px;
   letter-spacing: 3px;
+}
+/* #z {
+  font-size:18px;
+  color: white;
+} */
+.redbtn {
+  color: #fff !important;
+    background-color: #d9534f !important;
+    border-color: #d43f3a !important;
 }
 .main {
   height: 65vh;
@@ -21,15 +41,17 @@ p {
 
 }
 .btn-danger {
+  font-size: 1.25em;
   color: #fff;
-  background-color: #024F6D;
-  border-color: #024F6D;
+  background-color: #BA0C2F;
+  border-color: #BA0C2F;
 }
 
 .btn-success {
+  font-size: 1.25em;
   color: #fff;
-  background-color: #024F6D;
-  border-color: #024F6D;
+  background-color: #BA0C2F;
+  border-color: #BA0C2F;
 }
 
 .navbar-nav>.active>a {
@@ -46,9 +68,16 @@ li a:hover {
     
    
 }
-
+a.navbar-brand {
+  font-size: 2em;
+  margin-left: 15px;
+  margin-right: 10px;
+}
 a {
     color: white;
+}
+li > a {
+  font-size: 20px;
 }
 .navbar {
     margin-bottom: 0px !important;  
@@ -167,8 +196,9 @@ a {
     font-size:15px !important;
   }
   h5 {
-    font-size: 1.25em !important;
+    font-size: 1.5em !important;
     color:  #024F6D !important;
+    font-weight: bold;
   }
 
   nav.navbar.navbar-inverse {
