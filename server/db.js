@@ -15,7 +15,7 @@ let getScores = () => {
     console.log('GET: about to make promise with database');
     //connection.connect();
     return new Promise((resolve, reject) => {
-        connection.query(`select * from leaderboard`, (err, results, fields) => {
+        connection.query(`select * from leaderboard order by wpm desc`, (err, results, fields) => {
             if (err) {
                 //connection.end();
                 console.log('Cannot get scores');
