@@ -168,7 +168,7 @@ $('#submitIt').on("click", function() {
         if (wpm > 0) {
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:5500/api/scores',
+                url: 'http://just-my-type-game.herokuapp.com/api/scores',
                 data: JSON.stringify({
                     data
                 }),
@@ -188,10 +188,10 @@ $('#submitIt').on("click", function() {
         }
 })
 
-let port = process.env.PORT || 3306;
+// let port = process.env.PORT || 3306;
 //gets all the scores from the database and appends them to leaderboard id
 // fetch('http://localhost:5500/api/scores')
-fetch(`http://just-my-type-game.herokuapp.com:{port}/api/scores`)
+fetch(`http://just-my-type-game.herokuapp.com/api/scores`)
   .then(function(response) {
         return response.json();
   }).then(function(myJson) {
