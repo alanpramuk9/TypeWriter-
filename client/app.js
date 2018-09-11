@@ -210,3 +210,22 @@ fetch('http://localhost:5500/api/scores')
         )
     }
   });
+
+  //gets all the words from the database and appends them to sentenceContainer id
+fetch('http://localhost:5500/api/words')
+.then(function(response) {
+      return response.json();
+}).then(function(myJson) { 
+  for (let i =1; i < myJson.length; i++){
+      //retrieves sentece id and appends data
+      
+      $('#sentenceContainer').append(`
+      <div id="leaderboardContainer" style="display: flex; justify-content: space-around; margin: 10px 0px;">
+          <div> <span id="rank"> ${i}.</span></div>
+          <p class="rankInfo">${myJson[i].word}</p>
+         
+      </div>
+      `
+      )
+  }
+});

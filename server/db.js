@@ -36,6 +36,25 @@ let getScores = () => {
     });
 };
 
+//get all the words 
+let getWords = () => {
+    console.log('GET: about to make promise with database   ');
+    //connection.connect();
+    return new Promise((resolve, reject) => {
+        connection.query(`select * from words`, (err, results, fields) => {
+            if (err) {
+                console.log('Cannot get words');
+                console.log(err);
+                reject(err);
+            };
+            console.log('about to actually make the result');
+            console.log(results);
+            resolve(results);
+            //connection.end();
+        });
+    });
+};
+
 let getScore= (id) => {
     //connection.connect();
     return new Promise((resolve, reject) => {
@@ -255,7 +274,7 @@ module.exports = {
     CreateChirp: createChirp,
     CreateMention: createMention,
     GetMentions: getMentions,
-
+    GetWords: getWords,
     GetScores: getScores,
     CreateScore: createScore,
     GetScore: getScore

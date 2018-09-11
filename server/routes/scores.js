@@ -3,7 +3,6 @@ const express = require('express');
 const database = require('../db');
 let router = express.Router();
 
-
 //post score
 router.post('/', (req,res) => {
     console.log('*** Posting Score: req.body ***');

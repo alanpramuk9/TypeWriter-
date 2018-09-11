@@ -10,7 +10,7 @@ const express = require('express');
 const routes = require('./routes');
 const stateRouting = require('./middleware/routing.mw');
 const bodyParser = require('body-parser');
-const cors=require('cors');
+const cors= require('cors');
 
 let app = express();
 const CLIENT_PATH = path.join(__dirname, '../client');
