@@ -188,8 +188,10 @@ $('#submitIt').on("click", function() {
         }
 })
 
+let port = process.env.PORT || 3306;
 //gets all the scores from the database and appends them to leaderboard id
-fetch('http://localhost:5500/api/scores')
+// fetch('http://localhost:5500/api/scores')
+fetch(`http://just-my-type-game.herokuapp.com:{port}/api/scores`)
   .then(function(response) {
         return response.json();
   }).then(function(myJson) {
