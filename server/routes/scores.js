@@ -1,5 +1,4 @@
 const express = require('express');
-//const chirpsStore = require('../chirpstore');
 const database = require('../db');
 let router = express.Router();
 
@@ -22,7 +21,7 @@ router.post('/', (req,res) => {
     
 });
 
-//retrieves mentions
+//retrieves id
 router.get('/:id?', (req, res) => {
     let id = req.params.id
     if(id) {
