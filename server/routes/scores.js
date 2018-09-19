@@ -5,9 +5,9 @@ let router = express.Router();
 //post score
 router.post('/', (req,res) => {
     console.log('*** Posting Score: req.body ***');
-    // console.log(req.body);
+    console.log(req.body);
     console.log('*** request name: req.body.name ***');
-    // console.log(req.body.name);
+    console.log(req.body.name);
 
     
     database.CreateScore(req.body.data.name, req.body.data.wpm)

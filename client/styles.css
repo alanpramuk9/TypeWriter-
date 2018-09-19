@@ -1,5 +1,7 @@
 body {
-  height: 100vh;  
+  /* height: 100vh;    */
+   position: relative;
+   
 }
 p {
   font-size: 1.1em;
@@ -31,10 +33,17 @@ p {
     border-color: #d43f3a !important;
 }
 .main {
+  margin-top: -175px;
   height: 65vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.well {
+  height: 10px;
+    padding: 9px 22px;
+    margin-bottom: 2px;
 }
 .navbar-inverse {
     background-color: #024F6D;
@@ -90,23 +99,25 @@ li > a {
   
   #prompt-container {
     font-family: Courier New, Courier, monospace;
-    font-size: 24px;
-    letter-spacing: 3px;
+    font-size: 19px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
   }
   
   #characterHighlight {
     position: absolute;
     margin-top: 0px;
-    width: 16px;
-    height: 32px;
+    width: 9px;
+    height: 24px;
     background-color: yellow;
-    padding-left: 0;
+    padding: 0px;
     opacity: .5;
-    margin-left: 19.5%;
+    margin-left: 200px;
   }
 
   #sentence {
-    margin-left:20%;
+    margin: 0px 15px 5px 200px;
+    
     
 
   }
@@ -133,8 +144,12 @@ li > a {
   }
   
   .keys-row {
-    margin-top: 14px;
+    margin-top: -6px;
     padding: 13px 0;
+  }
+  .well.spacebar {
+    height: 32px;
+    padding: 7px 22px;
   }
   
   #feedback {
@@ -161,7 +176,7 @@ li > a {
   }
 
   #noTopMargin {
-    margin-top: 0px !important;
+    margin-top: -9px !important;
   }
   
   .modal-header {
@@ -227,3 +242,33 @@ li > a {
    border-color: #d9534f;
    border: 1.7px solid;
  }
+
+ .hrConfigure {
+  border: solid #DDDDDD 2px;
+  margin-top: 3px;
+  margin-bottom: 20px;
+  margin-right:15px;
+ }
+
+ .form-control {
+  height: 24px;
+  padding: 2px 12px;
+  font-size: 14px;
+  line-height: 14px;
+  margin-bottom: -10px;
+ }
+
+ /* media queries  */
+ @media only screen and (max-width: 600px) {
+  
+}
+
+@media only screen and (max-width: 780px) {
+  body {
+      background-color: lightblue;
+  }
+}
+
+@media only screen and (max-width: 996px) {
+  
+}

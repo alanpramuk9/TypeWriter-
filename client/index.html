@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Just My Type</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body style="min-width:880px !important">
     <!-- navigation bar -->
     <nav class="navbar navbar-inverse">
         <div class="container-fluid" style="" id='centerNav'>
@@ -28,33 +28,25 @@
                 <li>
                     <a href="leaderboard.html">Leaderboard</a>
                 </li>
-                <!-- <li>
-                    <a href="sentence.html">Sentence</a>
-                </li> -->
+               
             </ul>
-            <!-- <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a class="sm" href="#">
-                        <span class="glyphicon glyphicon-user"></span> Sign Up</a>
-                </li>
-                <li>
-                    <a class="sm" href="#">
-                        <span class="glyphicon glyphicon-log-in"></span> Login</a>
-                </li>
-            </ul> -->
+            
         </div>
     </nav>
     <!-- stat area -->
-    <div style="width:100%; height: 150px;  background-color:#DDDDDD; margin-bottom:30px;">
-        <!-- <div style="width:100%; height: 150px; display: flex; flex-direction: column; background-color:#DDDDDD; margin-bottom:30px;"> -->
-        <div style="display:flex; justify-content: center; position: relative; top: 42px;">
-            <!-- <h4 style="margin-top:10px; text-align: center">Start Typing To Begin!</h4> -->
-            <button class="btn btn-success" style="margin-left: 30px" id="reset">Play again</button>
-            <button type="button" class="btn btn-danger" style="margin-left: 30px" data-toggle="modal" data-target="#myModal">Submit Your Score</button>
+    <div style="width:100%; height: 200px;  background-color:#DDDDDD; margin-bottom:30px;">
+        <div style="display:flex; justify-content: center; position: relative; top: 5px;">
+            <h4 style="margin-top:10px; font-weight: 800; text-align: center; color: #024F6D">Press Enter To Begin!</h4> 
         </div>
-        <!-- submit your score modal  -->
-        <div style="display: flex; justify-content: space-between">
-            <div class="stats" style="display:flex; justify-content: space-around; height:75px; width: 35%">
+        <!-- Button Group -->
+        <div style=" display: flex; margin: 10px auto; justify-content: center">
+            <button type="button" class="btn btn-small btn-success" style="margin-left: 30px" id="reset">Play again</button>
+            <button type="button" class="btn btn-sm btn-danger" style="margin-left: 30px" data-toggle="modal" data-target="#myModal">Submit Your Score</button>
+        </div>
+
+            <!-- submit your score modal  -->
+        <div style="display: flex; justify-content: center">
+            <div class="stats" style="display:flex; justify-content: space-evenly; height:75px; min-width: 30%">
                 <div class="timercontainer" style="display:flex; flex-direction: column">
                     <h5 style="text-decoration: underline">Time: </h5>
                     <div id="timer"></div>
@@ -71,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <div class="stats" style="display:flex; justify-content: space-around;  height:75px; width: 35%">
+            <div class="stats" style="display:flex; justify-content: space-evenly;  height:75px; width: 30%">
                 <div class="timercontainer" style="display:flex; flex-direction: column">
                     <h5 style="text-decoration: underline">Characters: </h5>
                     <div id="characters"> </div>
@@ -87,7 +79,52 @@
                 
             </div>
             </div>
+    
+    
+    
+    
+        
         </div>
+
+
+    <!-- relative postioned container to keep inputs always on the left  -->
+    
+    
+    <div class="inputsContainer" style="position: relative; padding: 5px 5px 5px 20px;color: #ffffff; background-color: #BA0C2F; left: 0; margin-left: 52px; top: -224px; height: 184px; width: 175px;">
+        <div class="display: flex; flex-direction: column;"></div>
+        <!-- <h3 style="text-align: center;
+        margin-right: 23px;">Configure Game</h3>
+        <hr class="hrConfigure"> -->
+        
+               
+                    <label for="sel1"><p style="margin: 0 auto 2px; font-size: 1.25em;"># Sentences </p></label>
+                    <select onchange="sentenceChange()" class="form-control input-md sentenceInput" style="width: 100px;" id="sel1">
+                      <option>2</option>
+                      <option>4</option>
+                      <option>6</option>
+                    </select>
+                    <br>
+                
+                
+                
+                    <span style="margin: 0 auto 10px; font-size: 1.25em;">Difficulty </span>
+                    <span href="#" data-toggle="tooltip" data-placement="top"title="Difficulty based on word length selected from 30,000 word dataset"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></span>
+                    <br>
+                    <form>
+                            <input class="difficulty" type="radio" name="difficulty" value="Easy">Easy<br>
+                            <input class="difficulty" type="radio" name="difficulty" value="Medium" checked>Medium<br>
+                            <input class="difficulty" type="radio" name="difficulty" value="Hard" > Hard<br>
+                    </form>
+                
+          
+            
+        
+         
+        
+   
+</div>
+</div>
+    <!-- Section under the stats -->
         <div class="containermain main" id="target">
             <div class="row col-md-12" id="prompt-container">
                 <div class="row col-xs-12" id="characterHighlight"></div>
