@@ -338,7 +338,7 @@ fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
   .then(function(response) {
         return response.json();
   }).then(function(myJson) {
-    formattedDate; 
+    let formattedDate; 
     for (let i =1; i < myJson.length; i++){
         //formats the mysql timestamp with moment library 
         formattedDate = moment(`${myJson[i].created_at}`).utc().format('YYYY-MM-DD');
