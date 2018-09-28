@@ -1,34 +1,22 @@
-
-
 //Uppercase keyboard is hidden by default
 $('#keyboard-upper-container').hide();
 $('#characterHighlight').hide();
-let numWords = 8;
-//retrieve number of sentences from input box
 
-
-// let difficulty = document.querySelector('input[name="difficulty"]:checked').value
-let difficulty = "Medium";
+let difficulty = "Medium"; //default value otherwise check for selected input
 difficulty = $('.difficulty:checked').val();
-
-
-var str = "";
-let sent = "";
 var tempArray = [];
-var tempSent = [];
-let newNew = [];
-let newSentence = [];
-var sentences = [];
+var textfile;
+
 function sentenceChange() {
     return sentenceCount = $(".sentenceInput option:selected" ).text();
 }
-var textfile;
 
+//upon pressing the enter key
 $(document).keyup(function(e) {
     if (e.which == 13) {
         difficulty = $('.difficulty:checked').val();
         $('#characterHighlight').show();
-        
+        //retrieve the correct text file to parse based on difficulty selection
         if (difficulty === "Hard") {
             textfile = "words/longwords.txt" 
         } else if (difficulty === "Easy") {
@@ -37,13 +25,14 @@ $(document).keyup(function(e) {
             textfile = "words/mediumwords.txt"
         }
 
+//asynchronous request to retrieve text file using promises
 fetch(textfile)
   .then(response => response.text())
   .then(text => {
     var sentenceCount = $(".sentenceInput option:selected" ).text();
-    console.log()
     var sentences = [];
     let numWords;
+    //least words per sentence for 'easy' and most for 'hard' 
     if (difficulty == "Easy") {
         numWords = 12;
     } else if (difficulty == "Medium") {
@@ -52,33 +41,19 @@ fetch(textfile)
         numWords = 6;
     }
 
+    //splits .txt file of words by space into an indexed array
     let textArray = text.split(" ");
-    // let textArray2 = text.split("\n");
-    
-    //let textArray = textArray2.split(" ");
-    for(let j = 0; j < sentenceCount; j++) {
 
+    //determines how many words to add to tempArray
+    for(let j = 0; j < sentenceCount; j++) {
       for(let index=0; index < numWords; index++ ){
         var randWord2 = (textArray[Math.floor(Math.random() * textArray.length)] );
         randWord2.toString();
         var randWord = `${randWord2}`;
         tempArray.push(randWord);
-        //console.log(tempArray);
-        
-        //console.log(tempSent);
-        //tempSent = tempSent.concat(randWord2);
-        //newSentence[0].push(randWord);
-    
-            //newSentence.push(tempSent);
-           // tempSent = tempArray.join(" ");
-            //console.log(tempSent)
-            //console.log(tempSent);
-            // tempSent.toString();
-            // console.log(tempSent);
-             //return newNew.push(tempSent);
        }
     }
-    
+    // an ineffecient way of slicing up the tempArray to a 2d array determined by number of sentences and number of words
     if (sentenceCount == 2) {
         let d = tempArray.slice(0,numWords);
         let dd = d.join(" ");
@@ -86,9 +61,7 @@ fetch(textfile)
         let f = tempArray.slice(numWords,numWords*2);
         let ff = f.join(" ");
         sentences.push(ff);
-        //console.log(sentences);
     }else if (sentenceCount == 4){
-        console.log('asfasdfasdfasdf', sentenceCount)
         let d = tempArray.slice(0,numWords);
         let dd = d.join(" ");
         sentences.push(dd);
@@ -123,18 +96,24 @@ fetch(textfile)
         sentences.push(zz);
     }
 
+    //game variables to keep track of
     let firstSentence = sentences[0];
-//let firstLetter = firstSentence[0];
-let sentenceNumber = 0;
-let characterCount = 0;
-let wordCount = 0
-let letterNumber = 0;
-let mistakeCount = 0;
-let wordsPerMinute = 0;
-let accuracy = 0.00;
+    let sentenceNumber = 0;
+    let characterCount = 0;
+    let wordCount = 0
+    let letterNumber = 0;
+    let mistakeCount = 0;
+    let wordsPerMinute = 0;
+    let accuracy = 0.00;
+    let complete = false;
+    let formattedDate = '';
+    let minutes = 0;
+    let seconds = 0;
+    let interval = 0;
+    let playing = false;
 
-    // console.log(e.which);
-// Holding  T displays uppercase keyboard, otherwise lowercase keyboard is shown
+    
+// Holding 'shift' key down displays uppercase keyboard, otherwise lowercase keyboard is shown
 $(document).keydown(function (e) {
     if (e.which == 16) {
         $('#keyboard-upper-container').show();
@@ -156,31 +135,19 @@ $(document).keypress(function (e) {
     })
 });
 
-// Initial typing game variables that we will track
-let complete = false;
-let formattedDate = '';
-let minutes = 0;
-let seconds = 0;
-let interval = 0;
-let playing = false;
-
-// let sentences = ['ten ate neite ate nee enet ite ate inet ent eate',
-//  'Too ato too nOt enot one totA not anot tOO aNot',
-//  'oat itain oat tain nate eate tea anne inant nean', 
-//  'itant eate anot eat nato inate eat anot tain eat']
-// 'nee ene ate ite tent tiet ent ine ene ete ene ate'];
-//console.log(sentences);
-
-
-
-
 $("#timer").html(minutes + 'm ' + seconds + 's');
 $('#sentence').append(`<div >${sentences[sentenceNumber]}</div>`);
-
     // // Shows the letter you need to type in the div with the #targetLetter id.
     // $('#targetLetter').append(String.fromCharCode(sentences[sentenceNumber].charCodeAt(letterNumber)));
 
-//This is the main event function. Once a key is pressed, the time begins
+
+
+
+/**************************************************************************
+ ***************************************************************************
+  This is the main event function. Once a key is pressed, the time begins
+***************************************************************************
+**************************************************************************/
 $(document).keypress(function (e) {
     if (playing === false) {
         playing = true;
@@ -212,7 +179,7 @@ $(document).keypress(function (e) {
         $('#accuracy').html(roundedAccuracy);
         $('#targetLetter').text(String.fromCharCode(sentences[sentenceNumber].charCodeAt(letterNumber)));
     } 
-        // if it's the wrong key, a X mark is shown, and a mistake is saved in mistakeCount
+    // if it's the wrong key, a X mark is shown, and a mistake is saved in mistakeCount
     else {
         $('#characterHighlight').addClass('red-block');
         mistakeCount++;
@@ -242,7 +209,6 @@ $(document).keypress(function (e) {
         function timerStop() {
             clearInterval(interval);
         }
-        // wordsPerMinute = Math.round(wordCount / ((seconds / 60) - 2 * mistakeCount));
         //Calculate the Words per minute- one formula is every 5 characters = 1 word
         let numerator= characterCount/5;
         if (minutes < 0){
@@ -253,19 +219,20 @@ $(document).keypress(function (e) {
             let nominalizedMinutes = totalSeconds/60;
             wordsPerMinute= Math.round(numerator/ nominalizedMinutes);
         }
-        
-        //this function will ask the user if they want to play again
+
+        //appends the words per minute calculation. stops timer
         $('#wpmScoreModal').append(`${wordsPerMinute}`);
         $('#wpm').html(wordsPerMinute).addClass('wpmHighlight');
         timerStop();
     }
-    
+
 });
 //reloads page if play again button is clicked
 $("#reset").click(function () {
     location.reload();
 });
 //this is the timer function that will start then the first character of the first sentence is pressed 
+//complements to Jiovani Rosario for simple timing function
 function timerBegin() {
     function timer() {
         if (playing) {
@@ -285,6 +252,8 @@ function timerBegin() {
     interval = setInterval(timer, 1000);
 }
 
+//Submits data to database
+//remember to change url to localhost:8080 if in development environment
 $('#submitIt').on("click", function() {
         let name = document.getElementById('name').value;
         wpm = wordsPerMinute;
@@ -317,13 +286,6 @@ $('#submitIt').on("click", function() {
         }
 })
 
-
-    
-    
-    
-
-    
-
   }).catch(function(error) {
     console.log(error);
   });
@@ -331,9 +293,9 @@ $('#submitIt').on("click", function() {
 }
 })
 
-// let port = process.env.PORT || 3306;
 //gets all the scores from the database and appends them to leaderboard id
 // fetch('http://localhost:5500/api/scores')
+// let port = process.env.PORT || 3306;
 fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
   .then(function(response) {
         return response.json();
@@ -356,19 +318,18 @@ fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
     }
   });
 
-//   
+//game not yet formatted for smaller devices
+//alert warning user if screen width less than 1000px
 function checkWidth() {
     var windowSize = $(window).width();
-
     if (windowSize < 1000) {
       alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels. Please zoom out if needed. Updates coming!");
-    
     }
   }
   // Execute on load
   checkWidth();
 
-
+//nonsense old stuff
   //gets all the words from the database and appends them to sentenceContainer id
 // fetch('http://localhost:5500/api/words')
 // .then(function(response) {
@@ -376,12 +337,10 @@ function checkWidth() {
 // }).then(function(myJson) { 
 //   for (let i =1; i < myJson.length; i++){
 //       //retrieves sentece id and appends data
-      
 //       $('#sentenceContainer').append(`
 //       <div id="leaderboardContainer" style="display: flex; justify-content: space-around; margin: 10px 0px;">
 //           <div> <span id="rank"> ${i}.</span></div>
 //           <p class="rankInfo">${myJson[i].word}</p>
-         
 //       </div>
 //       `
 //       )

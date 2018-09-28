@@ -6,8 +6,26 @@ body {
 p {
   font-size: 1.1em;
 }
+.about {
+  height:88vh; display: flex; justify-content: center; align-items: center;
+}
+.aboutContainer {
+  background-color: #024F6D; 
+  padding: 30px 50px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around; 
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
 .about > h4 {
   color: white;
+}
+.aboutContainer > h2 {
+  text-align: center;
+  color:white;
+}
+.mainContainer h4 {
+  text-decoration: underline; font-weight: 60
 }
 
 /* #leaderboardContainer {
@@ -128,6 +146,7 @@ li > a {
     
     
   }
+
 
   .red-block {
     background-color: #d9534f !important;
