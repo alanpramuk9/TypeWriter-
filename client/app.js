@@ -140,13 +140,8 @@ $('#sentence').append(`<div >${sentences[sentenceNumber]}</div>`);
     // // Shows the letter you need to type in the div with the #targetLetter id.
     // $('#targetLetter').append(String.fromCharCode(sentences[sentenceNumber].charCodeAt(letterNumber)));
 
-
-
-
 /**************************************************************************
- ***************************************************************************
   This is the main event function. Once a key is pressed, the time begins
-***************************************************************************
 **************************************************************************/
 $(document).keypress(function (e) {
     if (playing === false) {
@@ -329,19 +324,4 @@ function checkWidth() {
   // Execute on load
   checkWidth();
 
-//nonsense old stuff
-  //gets all the words from the database and appends them to sentenceContainer id
-// fetch('http://localhost:5500/api/words')
-// .then(function(response) {
-//       return response.json();
-// }).then(function(myJson) { 
-//   for (let i =1; i < myJson.length; i++){
-//       //retrieves sentece id and appends data
-//       $('#sentenceContainer').append(`
-//       <div id="leaderboardContainer" style="display: flex; justify-content: space-around; margin: 10px 0px;">
-//           <div> <span id="rank"> ${i}.</span></div>
-//           <p class="rankInfo">${myJson[i].word}</p>
-//       </div>
-//       `
-//       )
   
