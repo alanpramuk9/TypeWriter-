@@ -120,6 +120,7 @@ li > a {
     font-size: 19px;
     letter-spacing: 2px;
     word-spacing: 2px;
+    min-height:75px;
   }
   
   #characterHighlight {
@@ -153,7 +154,7 @@ li > a {
   }
   
   .keyboard-container {
-    margin-top: 200px;
+    /* margin-top: 200px; */
   }
   
   #targetLetter {

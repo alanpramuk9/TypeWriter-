@@ -1,101 +1,62 @@
-//Uppercase keyboard is hidden by default
-$('#keyboard-upper-container').hide();
-$('#characterHighlight').hide();
+'use strict'
 
-let difficulty = "Medium"; //default value otherwise check for selected input
-difficulty = $('.difficulty:checked').val();
-var tempArray = [];
-var textfile;
+$('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
+// Holding 'shift' key down displays uppercase keyboard, otherwise lowercase keyboard is shown
+$(document).keydown(function (e) {
+    if (e.which == 16) {
+        $('#keyboard-upper-container').show();
+        $('#keyboard-lower-container').hide();
+    }
+    $(document).keyup(function (e) {
+        if (e.which == 16) {
+            $('#keyboard-upper-container').hide();
+            $('#keyboard-lower-container').show();
+        }
+    });
+    
+});
+$('#characterHighlight').hide(); //Hide character highlight until game starts
 
-function sentenceChange() {
-    return sentenceCount = $(".sentenceInput option:selected" ).text();
-}
+let difficulty = $('.difficulty:checked').val(); //grabs the difficulty 
+let textfile, numWords;
 
-//upon pressing the enter key
+//upon pressing the enter key select the correct txt file and assign # words per sentence
 $(document).keyup(function(e) {
     if (e.which == 13) {
         difficulty = $('.difficulty:checked').val();
         $('#characterHighlight').show();
         //retrieve the correct text file to parse based on difficulty selection
         if (difficulty === "Hard") {
-            textfile = "words/longwords.txt" 
+            textfile = "words/Hardwords.txt" 
+            numWords = 6;
         } else if (difficulty === "Easy") {
-            textfile = "words/shortwords.txt"
+            textfile = "words/Easywords.txt"
+            numWords = 12;
         } else if (difficulty === "Medium") {
-            textfile = "words/mediumwords.txt"
+            textfile = "words/Mediumwords.txt"
+            numWords = 9;
         }
 
 //asynchronous request to retrieve text file using promises
 fetch(textfile)
   .then(response => response.text())
   .then(text => {
-    var sentenceCount = $(".sentenceInput option:selected" ).text();
-    var sentences = [];
-    let numWords;
-    //least words per sentence for 'easy' and most for 'hard' 
-    if (difficulty == "Easy") {
-        numWords = 12;
-    } else if (difficulty == "Medium") {
-        numWords = 9;
-    }else if (difficulty == "Hard") {
-        numWords = 6;
-    }
+    var sentenceCount = $(".sentenceInput option:selected" ).text(); 
+    var sentences = []; //will store the final array of words to type against
+    let textArray = text.split(" "); //splits .txt file of words by space into an indexed array
 
-    //splits .txt file of words by space into an indexed array
-    let textArray = text.split(" ");
-
-    //determines how many words to add to tempArray
+    //determines how many words to add to senteces array
     for(let j = 0; j < sentenceCount; j++) {
+        let sentenceBuidler = [];
       for(let index=0; index < numWords; index++ ){
-        var randWord2 = (textArray[Math.floor(Math.random() * textArray.length)] );
-        randWord2.toString();
-        var randWord = `${randWord2}`;
-        tempArray.push(randWord);
+        let randWord = textArray[Math.floor(Math.random() * textArray.length)] ;
+        randWord.toString();
+        sentenceBuidler.push(randWord);
        }
+       let tempSentence = sentenceBuidler.join(" "); //join the previous words into a sentence by space
+       //add this completed sentence to the parsed and final sentence variable
+       sentences.push(tempSentence);
     }
-    // an ineffecient way of slicing up the tempArray to a 2d array determined by number of sentences and number of words
-    if (sentenceCount == 2) {
-        let d = tempArray.slice(0,numWords);
-        let dd = d.join(" ");
-        sentences.push(dd);
-        let f = tempArray.slice(numWords,numWords*2);
-        let ff = f.join(" ");
-        sentences.push(ff);
-    }else if (sentenceCount == 4){
-        let d = tempArray.slice(0,numWords);
-        let dd = d.join(" ");
-        sentences.push(dd);
-        let f = tempArray.slice(numWords,numWords*2);
-        let ff = f.join(" ");
-        sentences.push(ff);
-        let r = tempArray.slice(numWords*2,numWords*3);
-        let rr = r.join(" ");
-        sentences.push(rr);
-        let t = tempArray.slice(numWords*3,numWords*4);
-        let tt = t.join(" ");
-        sentences.push(tt);
-        console.log(sentences);
-    }else if (sentenceCount == 6){
-        let d = tempArray.slice(0,numWords);
-        let dd = d.join(" ");
-        sentences.push(dd);
-        let f = tempArray.slice(numWords,numWords*2);
-        let ff = f.join(" ");
-        sentences.push(ff);
-        let r = tempArray.slice(numWords*2,numWords*3);
-        let rr = r.join(" ");
-        sentences.push(rr);
-        let t = tempArray.slice(numWords*3,numWords*4);
-        let tt = t.join(" ");
-        sentences.push(tt);
-        let y = tempArray.slice(numWords*4,numWords*5);
-        let yy = y.join(" ");
-        sentences.push(yy);
-        let z = tempArray.slice(numWords*5,numWords*6);
-        let zz = z.join(" ");
-        sentences.push(zz);
-    }
-
     //game variables to keep track of
     let firstSentence = sentences[0];
     let sentenceNumber = 0;
@@ -113,28 +74,6 @@ fetch(textfile)
     let playing = false;
 
     
-// Holding 'shift' key down displays uppercase keyboard, otherwise lowercase keyboard is shown
-$(document).keydown(function (e) {
-    if (e.which == 16) {
-        $('#keyboard-upper-container').show();
-        $('#keyboard-lower-container').hide();
-    }
-    $(document).keyup(function (e) {
-        if (e.which == 16) {
-            $('#keyboard-upper-container').hide();
-            $('#keyboard-lower-container').show();
-        }
-    });
-});
-
-// Hightlights the key you press (create a CSS class in styles.css for 'highlights')
-$(document).keypress(function (e) {
-    $(`#${e.which}`).addClass('highlights')
-    $(document).keyup(function (e) {
-        $('.highlights').removeClass('highlights')
-    })
-});
-
 $("#timer").html(minutes + 'm ' + seconds + 's');
 $('#sentence').append(`<div >${sentences[sentenceNumber]}</div>`);
     // // Shows the letter you need to type in the div with the #targetLetter id.
@@ -148,6 +87,12 @@ $(document).keypress(function (e) {
         playing = true;
         timerBegin(playing);
     }
+
+    // Hightlights the key you press (create a CSS class in styles.css for 'highlights')
+    $(`#${e.which}`).addClass('highlights')
+    $(document).keyup(function (e) {
+        $('.highlights').removeClass('highlights')
+    })
 
     // Logic behind correct and incorrect keystrokes
     // If correct keystroke, the yellow block highlightes the next letter, the letter displayed in #targetLetter div goes to the next one in line, and a green check mark is displayed
@@ -188,7 +133,7 @@ $(document).keypress(function (e) {
         $('#accuracy').html(roundedAccuracy);
     }
     // Set up the next line of text to appear, and get the yellow highlighted area to follow
-    if (letterNumber == sentences[sentenceNumber].length) {
+    if (letterNumber === sentences[sentenceNumber].length) {
         sentenceNumber++;
         letterNumber = 0;
         $('#feedback').empty();
@@ -199,8 +144,10 @@ $(document).keypress(function (e) {
         })
     }
     //logic for when there are no more sentences to display and game ends
-    if (sentenceNumber == sentences.length) {
+    if (sentenceNumber >= sentences.length) {
+        $('#characterHighlight').hide(); //Hide character highlight until game starts
         complete = true;
+        // playing = false;
         function timerStop() {
             clearInterval(interval);
         }
@@ -219,9 +166,10 @@ $(document).keypress(function (e) {
         $('#wpmScoreModal').append(`${wordsPerMinute}`);
         $('#wpm').html(wordsPerMinute).addClass('wpmHighlight');
         timerStop();
+    
     }
-
 });
+
 //reloads page if play again button is clicked
 $("#reset").click(function () {
     location.reload();
