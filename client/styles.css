@@ -49,7 +49,7 @@ p {
 }
 .main {
   margin-top: -175px;
-  height: 60vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -93,7 +93,7 @@ li a:hover {
 }
 a.navbar-brand {
   font-size: 2em;
-  margin-left: 15px;
+  margin-left: 15px !important;
   margin-right: 10px;
 }
 a {
@@ -117,6 +117,7 @@ li > a {
     letter-spacing: 2px;
     word-spacing: 2px;
     min-height:75px;
+    margin-bottom: 30px;
   }
   
   #characterHighlight {
@@ -222,7 +223,7 @@ li > a {
     font-size:15px !important;
   }
   h5 {
-    font-size: 1.5em !important;
+    font-size: 1.4em !important;
     color:  #024F6D !important;
     font-weight: bold;
   }
@@ -267,7 +268,7 @@ li > a {
 
  .form-control {
   height: 24px;
-  padding: 2px 12px;
+  padding: 2px 34px;
   font-size: 14px;
   line-height: 14px;
   margin-bottom: -10px;
@@ -287,13 +288,28 @@ li > a {
  }
 
 .btn-danger, .btn-success {
-
+  font-size: 14px;
     color: #BA0C2F;
     border-width: 2px;
     background-color: white;
     border-color: #BA0C2F;
 }
 
+.inputsContainer { 
+  position: relative;
+    padding: 4px 3px 4px 33px;
+    color: #ffffff;
+    background-color: #BA0C2F;
+    left: 0;
+    margin-left: 52px;
+    top: -215px;
+    height: 171px;
+    width: 175px;
+}
+.navbar-nav {
+  float:right;
+  margin-right: 30px;
+}
 div.stats {text-align: center}
 
  /* media queries  */

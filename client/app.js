@@ -3,6 +3,7 @@
 //game variables to keep track of
 let difficulty = $('.difficulty:checked').val(); //grabs the difficulty level
 let sentenceCount = $(".sentenceInput option:selected").text(); 
+console.log(sentenceCount)
 let sentences = []; //stores the final array of words to type against
 let textfile, numWords;
 let sentenceNumber = 0;
@@ -41,6 +42,7 @@ $(document).ready(function(){
 $(document).keyup(function (e) {
     if (e.which == 13) {
         difficulty = $('.difficulty:checked').val();
+        sentenceCount = $(".sentenceInput option:selected").text(); 
         $('#characterHighlight').show(); //highlight target letter
 
         //retrieve the correct text file to parse based on difficulty selection.
@@ -257,7 +259,7 @@ fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
 function checkWidth() {
     var windowSize = $(window).width();
     if (windowSize < 1000) {
-        alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels. Please zoom out if needed. Updates coming!");
+        alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels.");
     }
 }
 
