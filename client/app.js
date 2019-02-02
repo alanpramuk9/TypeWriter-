@@ -3,7 +3,6 @@
 //game variables to keep track of
 let difficulty = $('.difficulty:checked').val(); //grabs the difficulty level
 let sentenceCount = $(".sentenceInput option:selected").text(); 
-console.log(sentenceCount)
 let sentences = []; //stores the final array of words to type against
 let textfile, numWords;
 let sentenceNumber = 0;
@@ -200,7 +199,7 @@ $(document).keyup(function (e) {
                                 data
                             }),
                             contentType: "application/json"
-                            //add confirmation text that submission was sent
+                        //add confirmation text that submission was sent in modal popup
                         }).done((result) => {
                             let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #d4edda'>Your submission was sent!</div>"
                             $('.modal-header').after(content).css({
@@ -212,7 +211,7 @@ $(document).keyup(function (e) {
                         }).fail((err) => {
                             console.log(err);
                         });
-                        //alert the user to complete typing game before submission
+                    //alert the user to complete typing game before submission
                     } else {
                         let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #BA0C2F'>You must complete a game first!</div>"
                         $('.modal-header').after(content).css({
@@ -232,7 +231,7 @@ $(document).keyup(function (e) {
 
 //gets all the scores from the database and appends them to leaderboard id
 // fetch('http://localhost:5500/api/scores')
-// let port = process.env.PORT || 3306;
+let port = process.env.PORT || 5500;
 fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
     .then(function (response) {
         return response.json();
@@ -265,14 +264,15 @@ function checkWidth() {
 
 const calculateAccuracy = () => {
     let roundedAccuracy = (1 - (mistakeCount / (mistakeCount + characterCount))) * 100;
-    accuracy = roundedAccuracy.toFixed(1);
+    accuracy = roundedAccuracy.toFixed(1); //round to 1 decimal place
     if (accuracy == Infinity || accuracy == 0) {
         accuracy = 100;
     }
     return accuracy;
 }
 
-//Calculate the Words per minute- one formula is every 5 characters = 1 word
+//Calculate the Words per minute
+//one formula is every 5 characters = 1 word then divide by time 
 const calculateWPM = () => {
     let numerator = characterCount / 5;
     if (minutes < 0) {
