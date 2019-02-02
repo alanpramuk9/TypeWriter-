@@ -231,7 +231,7 @@ $(document).keyup(function (e) {
 
 //gets all the scores from the database and appends them to leaderboard id
 // fetch('http://localhost:5500/api/scores')
-let port = process.env.PORT || 5500;
+//let port = process.env.PORT || 5500;
 fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
     .then(function (response) {
         return response.json();
@@ -271,6 +271,7 @@ const calculateAccuracy = () => {
     return accuracy;
 }
 
+console.log( 'why isnt this logging');
 //Calculate the Words per minute
 //one formula is every 5 characters = 1 word then divide by time 
 const calculateWPM = () => {
