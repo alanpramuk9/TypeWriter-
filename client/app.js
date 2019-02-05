@@ -17,7 +17,6 @@ let minutes = 0;
 let seconds = 0;
 let interval = 0;
 let playing = false;
-
 $('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
 $('#characterHighlight').hide(); //Hide character highlight until game starts
 

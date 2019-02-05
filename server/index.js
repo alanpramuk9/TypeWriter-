@@ -19,10 +19,11 @@ app.use(express.static(CLIENT_PATH));
 
 app.use('/api', routes);
 
-let port = process.env.PORT || 8080;
+//let port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+
 
 //for non production release to allow for cors requests 
 app.all('/*', function (req, res, next) {
