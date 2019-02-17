@@ -27,8 +27,8 @@ app.listen(port, () => {
 
 //for non production release to allow for cors requests 
 app.all('/*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5500");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header("Access-Control-Allow-Headers", "X-Requested-With,     Content-Type");
+    req.header("Access-Control-Allow-Origin", "http://localhost:8080");
+    req.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    req.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
     next();
 });
