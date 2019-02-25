@@ -26,7 +26,7 @@ $(document).ready(function(){
 checkWidth();
 //upon pressing the enter key select the correct txt file and assign # words per sentence
 $(document).keyup(function (e) {
-    if (e.which == 13 && playing == false) {
+    if (e.which == 13 && active == false) {
         difficulty = $('.difficulty:checked').val();
         sentenceCount = $(".sentenceInput option:selected").text(); 
         $('#characterHighlight').show(); //highlight target letter
@@ -43,7 +43,6 @@ $(document).keyup(function (e) {
             textfile = "words/Hardwords.txt"
             numWords = 6;
         }
-        playing = true;
         //asynchronous request to retrieve text file containing dataset of words
         fetch(textfile)
             .then(response => response.text())
@@ -63,13 +62,13 @@ $(document).keyup(function (e) {
                 $('#sentence').append(`<div >${sentences[sentenceNumber]}</div>`);
                 
                 //Once a key is pressed, the time begins
-                while (playing) {
-                    timerBegin(active);
-                    $(`#${e.which}`).addClass('highlights'); // Hightlights the key you press on keyboard 
-                    $(document).keyup(function (e) {
-                        $('.highlights').removeClass('highlights')
-                    })
-
+                $(document).keypress(function (e) {
+                    if (playing === false) {
+                        playing = true;
+                        timerBegin(playing);
+                    }
+                    //$(`#${e.which}`).addClass('highlights'); // Hightlights the key you press on keyboard 
+                   
                     // If correct keystroke, the yellow block highlightes the next letter, the letter displayed in #targetLetter 
                     // div goes to the next one in line, and a green check mark is displayed
                     if (e.which === sentences[sentenceNumber].charCodeAt(letterNumber)) {
@@ -110,7 +109,7 @@ $(document).keyup(function (e) {
                         $('#mistakes').addClass('bolder');
                         $('.submitBtn').removeClass('btn-sm').addClass('btn-lg')
                         $('#feedback').html('<span class="glyphicon glyphicon-off finishedLogo"></span>');
-                        playing = false;
+                        
                     }
                     // Set up the next line of text to appear, and get the yellow highlighted area to follow
                     else if (letterNumber === sentences[sentenceNumber].length) {
@@ -120,7 +119,7 @@ $(document).keyup(function (e) {
                         $('#sentence').append(`<div>${sentences[sentenceNumber]}</div>`);
                         $('#characterHighlight').css({'left': '14px', 'top': '+=30px' })
                     }
-                };
+                });
         })
     }})
 
