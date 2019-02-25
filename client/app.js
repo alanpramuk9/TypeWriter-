@@ -1,9 +1,9 @@
-'use strict'
+
 
 //game variables to keep track of
 let difficulty = $('.difficulty:checked').val(); //grabs the difficulty level
 let sentenceCount = $(".sentenceInput option:selected").text(); 
-let sentences = []; //stores the final array of words to type against
+let sentences = []; //final array of words to type against
 let textfile, numWords;
 let sentenceNumber = 0;
 let characterCount = 0;
@@ -11,26 +11,27 @@ let wordCount = 0
 let letterNumber = 0;
 let mistakeCount = 0;
 let accuracy = 0.00;
-let wordsPerMinute;
+let wordsPerMinute = 0;
 let formattedDate = '';
 let minutes = 0;
 let seconds = 0;
 let interval = 0;
-let wpm = null;
+let active = false;
 let playing = false;
+
 $('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
 $('#characterHighlight').hide(); //Hide character highlight until game starts
 
 $(document).ready(function(){
-
+checkWidth();
 //upon pressing the enter key select the correct txt file and assign # words per sentence
 $(document).keyup(function (e) {
-    if (e.which == 13) {
+    if (e.which == 13 && playing == false) {
         difficulty = $('.difficulty:checked').val();
         sentenceCount = $(".sentenceInput option:selected").text(); 
         $('#characterHighlight').show(); //highlight target letter
 
-        //retrieve the correct text file to parse based on difficulty selection. *Longer words require less words to fit to screen width*
+        //Longer words require less words to fit to screen width
         if (difficulty === "Easy") {
             textfile = "words/Easywords.txt"
             numWords = 12;
@@ -42,13 +43,12 @@ $(document).keyup(function (e) {
             textfile = "words/Hardwords.txt"
             numWords = 6;
         }
-
+        playing = true;
         //asynchronous request to retrieve text file containing dataset of words
         fetch(textfile)
             .then(response => response.text())
             .then(text => {
                 let textArray = text.split(" "); //splits .txt file of words by space into an indexed array
-
                 for (let j = 0; j < sentenceCount; j++) { //determines how many words to add to senteces array
                     let sentenceBuidler = [];
                     for (let index = 0; index < numWords; index++) {
@@ -62,12 +62,9 @@ $(document).keyup(function (e) {
                 $("#timer").html(minutes + 'm ' + seconds + 's');
                 $('#sentence').append(`<div >${sentences[sentenceNumber]}</div>`);
                 
-                //This is the main event function. Once a key is pressed, the time begins
-                $(document).keypress(function (e) {
-                    if (playing === false) {
-                        playing = true;
-                        timerBegin(playing);
-                    }
+                //Once a key is pressed, the time begins
+                while (playing) {
+                    timerBegin(active);
                     $(`#${e.which}`).addClass('highlights'); // Hightlights the key you press on keyboard 
                     $(document).keyup(function (e) {
                         $('.highlights').removeClass('highlights')
@@ -104,13 +101,16 @@ $(document).keyup(function (e) {
                     //if on last letter of last sentence then end the game and calc WPM
                     if (letterNumber === sentences[sentenceNumber].length && sentenceNumber === sentenceCount -1) {
                         $('#characterHighlight').hide(); //Hide character highlight until game starts
-                        calculateWPM();
-                        $('#wpmScoreModal').append(`${wordsPerMinute}`);
+                        //Calculate the Words per minute. Formula is every 5 characters = 1 word then divide by time  
+                        calculateWPM()
+                        // $('#wpmScoreModal').html(`${wordsPerMinute}`);
                         $('#wpm').html(wordsPerMinute).addClass('wpmHighlight');
                         timerStop();
+                        
                         $('#mistakes').addClass('bolder');
                         $('.submitBtn').removeClass('btn-sm').addClass('btn-lg')
                         $('#feedback').html('<span class="glyphicon glyphicon-off finishedLogo"></span>');
+                        playing = false;
                     }
                     // Set up the next line of text to appear, and get the yellow highlighted area to follow
                     else if (letterNumber === sentences[sentenceNumber].length) {
@@ -120,74 +120,44 @@ $(document).keyup(function (e) {
                         $('#sentence').append(`<div>${sentences[sentenceNumber]}</div>`);
                         $('#characterHighlight').css({'left': '14px', 'top': '+=30px' })
                     }
-                });
-
-                //reloads page if play again button is clicked
-                $("#reset").click(function () {
-                    location.reload();
-                });
-
-                //this is the timer function that will start then the first character of the first sentence is pressed 
-                function timerBegin() {
-                    function timer() {
-                        if (playing) {
-                            if (seconds === 59) {
-                                if (minutes < 59) {
-                                    minutes = minutes + 1;
-                                    seconds = 0;
-                                }
-                            else 
-                                seconds++;
-                            
-                        $("#timer").html(minutes + "m " + seconds + "s ");
-                    }
-                    interval = setInterval(timer, 1000); //set interval to one second
-                }
-            }
-        }
-            
-                //Submits data to database (change url to localhost:8080 if in development environment)
-                $('#submitIt').on("click", function () 
-                {
-                    let name = document.getElementById('name').value;
-                    wpm = wordsPerMinute;
-                    let data = {
-                        name: name,
-                        wpm: wpm
-                    }
-                    //if wpm is greater than 0, then submit the score
-                    if (wpm > 0) {
-                        $.ajax({
-                            type: "POST",
-                            url: 'https://just-my-type-game.herokuapp.com/api/scores',
-                            data: JSON.stringify({
-                                data
-                            }),
-                            contentType: "application/json"
-                        //add confirmation text that submission was sent in modal popup
-                        }).done((result) => {
-                            let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #d4edda'>Your submission was sent!</div>"
-                            $('.modal-header').after(content).css({
-                                'background-color': '#d4edda',
-                                'color': 'white',
-                                'text-align': 'center'
-                            })
-                            console.log(result);
-                        }).fail((err) => {
-                             console.log(err); 
-                        });
-                    //alert the user to complete typing game before submission
-                    } else {
-                        let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #BA0C2F'>You must complete a game first!</div>"
-                        $('.modal-header').after(content).css({'background-color': '#d9534f', 'color': 'white','text-align': 'center'})
-                    }
-                })
-            
-        // .catch(function (error) {
-        //         console.log(error);
-        //     });
-    })
+                };
+        })
     }})
+
+//reloads page if play again button is clicked
+$("#reset").click(function () {
+    location.reload();
+});
+
+//Submits data to database (change url to localhost:8080 if in development environment)
+$('#submitIt').on("click", function () {
+    let name = $('#name').val(); //document.getElementById('name').value;
+    let data = {
+        name: name,
+        wpm: wordsPerMinute
+    }
+    //if wpm is greater than 0, then submit the score
+    if (wordsPerMinute > 0) {
+        $.ajax({
+            type: "POST",
+            url: 'https://just-my-type-game.herokuapp.com/api/scores',
+            data: JSON.stringify({
+                data
+            }),
+            contentType: "application/json"
+        //add confirmation text that submission was sent in modal popup
+        }).done((result) => {
+            let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #d4edda'>Your submission was sent!</div>"
+            $('.modal-header').after(content).css({'background-color': '#d4edda', 'color': 'white', 'text-align': 'center' })
+            console.log(result);
+        }).fail((err) => {console.log(err); });
+        //alert the user to complete typing game before submission
+        } else {
+            let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #BA0C2F'>You must complete a game first!</div>"
+            $('.modal-header').after(content).css({'background-color': '#d9534f', 'color': 'white','text-align': 'center'})
+        }
+    
+})
 //gets all the scores from the database and appends them to leaderboard id                                                                                                //in dev env: fetch('http://localhost:5500/api/scores') port = process.env.PORT || 5500;
 fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
     .then(function (response) {
@@ -209,21 +179,12 @@ fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
     });
 
 //game is only formatted for laptops. Alert warning if screen width less than 1000px
-const checkWidth = () => {
+function checkWidth() {
     const windowSize = $(window).width();
     if (windowSize < 1000) 
         alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels.");
 }
 
-//calculate accuracy % and format it to percentage
-function calculateAccuracy() {
-    let roundedAccuracy = (1 - (mistakeCount / (mistakeCount + characterCount))) * 100;
-    accuracy = roundedAccuracy.toFixed(1); //round to 1 decimal place
-    if (accuracy == Infinity || accuracy == 0) { accuracy = 100; }
-    return accuracy;
-}
-
-//Calculate the Words per minute. Formula is every 5 characters = 1 word then divide by time  
 function calculateWPM() {
     const numerator = characterCount / 5;
     if (minutes < 0) {
@@ -234,6 +195,32 @@ function calculateWPM() {
         const nominalizedMinutes = totalSeconds / 60;
         wordsPerMinute = Math.round(numerator / nominalizedMinutes);
     }
+}
+
+//calculate accuracy % and format it to percentage
+function calculateAccuracy() {
+    let roundedAccuracy = (1 - (mistakeCount / (mistakeCount + characterCount))) * 100;
+    accuracy = roundedAccuracy.toFixed(1); //round to 1 decimal place
+    if (accuracy == Infinity || accuracy == 0) { accuracy = 100; }
+    return accuracy;
+}
+
+//this is the timer function that will start then the first character of the first sentence is pressed 
+function timerBegin() {
+    function timer() {
+        if (active) {
+            if (seconds === 59) {
+                if (minutes < 59) {
+                    minutes = minutes + 1;
+                    seconds = 0;
+                }
+            }else {
+                seconds++;
+            }
+        }
+        $("#timer").html(minutes + "m " + seconds + "s ");
+    }
+    interval = setInterval(timer, 1000); //set interval to one second
 }
 
 function timerStop() {
@@ -255,6 +242,6 @@ $(document).keydown(function (e) {
 
 });
 
-checkWidth();
+
 
 });//end of document.ready

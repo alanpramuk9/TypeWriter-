@@ -16,7 +16,7 @@ let getScores = () => {
                 reject(err);
             };
             resolve(results);
-            //connection.end();
+            connection.end();
         });
     });
 };
@@ -29,6 +29,7 @@ let getScore= (id) => {
                 reject(err);
             };
             resolve(results);
+            connection.end();
         });
     })
 };
@@ -41,6 +42,7 @@ let createScore = (name, wpm) => {
                 reject(err);
             };
             resolve(results);
+            connection.end();
         })
     })
 };
