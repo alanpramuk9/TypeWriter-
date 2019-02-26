@@ -18,6 +18,9 @@ let seconds = 0;
 let interval = 0;
 let active = false;
 let playing = false;
+let wpmInterval = 0;
+let accuracyString = "";
+let mistakeArray = {};
 
 $('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
 $('#characterHighlight').hide(); //Hide character highlight until game starts
@@ -63,15 +66,18 @@ $(document).keyup(function (e) {
                 
                 //Once a key is pressed, the time begins
                 $(document).keypress(function (e) {
-                    if (playing === false) {
+                    if (active === false) {
                         playing = true;
-                        timerBegin(playing);
+                        calculateWPM(playing);
+                        active = true;
+                        timerBegin(active);
+                        
                     }
                     //$(`#${e.which}`).addClass('highlights'); // Hightlights the key you press on keyboard 
                    
                     // If correct keystroke, the yellow block highlightes the next letter, the letter displayed in #targetLetter 
                     // div goes to the next one in line, and a green check mark is displayed
-                    if (e.which === sentences[sentenceNumber].charCodeAt(letterNumber)) {
+                    if (e.which === sentences[sentenceNumber].charCodeAt(letterNumber) && playing === true) {
                         $('#characterHighlight').css('left', '+=13.7px');
                         $('#feedback').html('<span class="glyphicon glyphicon-ok"></span>');
                         $('#characterHighlight').removeClass('red-block');
@@ -83,29 +89,27 @@ $(document).keyup(function (e) {
                             $('#wordCount').html(wordCount);
                         }
                         $('#characters').html(characterCount);
-                        calculateAccuracy();
-                        $('#accuracy').html(accuracy);
+                        calculateAccuracy(characterCount, mistakeCount);
+                        $('#accuracy').html(accuracyString);
                         $('#targetLetter').text(String.fromCharCode(sentences[sentenceNumber].charCodeAt(letterNumber))); //change target letter for highlight
                     }
                     // if it's the wrong key, a X mark is shown, and a mistake is saved in mistakeCount
-                    else {
+                    else if (e.which !== sentences[sentenceNumber].charCodeAt(letterNumber) && playing === true) {
                         $('#characterHighlight').addClass('red-block'); //highlight turns red
                         mistakeCount++;
                         $('#mistakes').html(mistakeCount);
                         $('#feedback').html('<span class="glyphicon glyphicon-remove"></span>');
-                        calculateAccuracy();
-                        $('#accuracy').html(accuracy);
+                        calculateAccuracy(characterCount, mistakeCount);
+                        $('#accuracy').html(accuracyString);
                     }
         
-                    //if on last letter of last sentence then end the game and calc WPM
+                    //if on last letter of last sentence then end the game
                     if (letterNumber === sentences[sentenceNumber].length && sentenceNumber === sentenceCount -1) {
-                        $('#characterHighlight').hide(); //Hide character highlight until game starts
-                        //Calculate the Words per minute. Formula is every 5 characters = 1 word then divide by time  
-                        calculateWPM()
-                        // $('#wpmScoreModal').html(`${wordsPerMinute}`);
+                        $('#characterHighlight').hide(); //Hide character highlight until game starts  
                         $('#wpm').html(wordsPerMinute).addClass('wpmHighlight');
                         timerStop();
-                        
+                        stopWpmInterval();
+                        playing = false;
                         $('#mistakes').addClass('bolder');
                         $('.submitBtn').removeClass('btn-sm').addClass('btn-lg')
                         $('#feedback').html('<span class="glyphicon glyphicon-off finishedLogo"></span>');
@@ -184,24 +188,13 @@ function checkWidth() {
         alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels.");
 }
 
-function calculateWPM() {
-    const numerator = characterCount / 5;
-    if (minutes < 0) {
-        const nominalizedSeconds = seconds / 60;
-        wordsPerMinute = Math.round(numerator / nominalizedSeconds);
-    } else {
-        const totalSeconds = (minutes * 60) + seconds;
-        const nominalizedMinutes = totalSeconds / 60;
-        wordsPerMinute = Math.round(numerator / nominalizedMinutes);
-    }
-}
-
 //calculate accuracy % and format it to percentage
-function calculateAccuracy() {
+function calculateAccuracy(characterCount, mistakeCount) {
     let roundedAccuracy = (1 - (mistakeCount / (mistakeCount + characterCount))) * 100;
     accuracy = roundedAccuracy.toFixed(1); //round to 1 decimal place
     if (accuracy == Infinity || accuracy == 0) { accuracy = 100; }
-    return accuracy;
+    accuracyString = `${accuracy}%`
+    return accuracyString;
 }
 
 //this is the timer function that will start then the first character of the first sentence is pressed 
@@ -219,11 +212,35 @@ function timerBegin() {
         }
         $("#timer").html(minutes + "m " + seconds + "s ");
     }
+    
     interval = setInterval(timer, 1000); //set interval to one second
 }
 
 function timerStop() {
     clearInterval(interval);
+}
+
+//Calculate the Words per minute. Formula is every 5 characters = 1 word then divide by time
+function calculateWPM() {
+    function calculate() {
+        if (playing) {
+            const numerator = characterCount / 5;
+            if (minutes < 0) {
+                const nominalizedSeconds = seconds / 60;
+                wordsPerMinute = Math.round(numerator / nominalizedSeconds);
+            } else {
+                const totalSeconds = (minutes * 60) + seconds;
+                const nominalizedMinutes = totalSeconds / 60;
+                wordsPerMinute = Math.round(numerator / nominalizedMinutes);
+            }
+        }
+        $('#wpm').html(wordsPerMinute);
+    }
+    wpmInterval = setInterval(calculate, 3000);
+}
+
+function stopWpmInterval() {
+    clearInterval(wpmInterval);
 }
 
 // Holding 'shift' key down displays uppercase keyboard, otherwise lowercase keyboard is shown
