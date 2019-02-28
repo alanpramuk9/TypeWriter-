@@ -20,13 +20,17 @@ let active = false;
 let playing = false;
 let wpmInterval = 0;
 let accuracyString = "";
-let mistakeArray = {};
+let targetLetter = '';
+const correctLetters = {}
+const errorLetters = {};
+const wpmOverTime = [];
 
 $('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
 $('#characterHighlight').hide(); //Hide character highlight until game starts
 
 $(document).ready(function(){
 checkWidth();
+
 //upon pressing the enter key select the correct txt file and assign # words per sentence
 $(document).keyup(function (e) {
     if (e.which == 13 && active == false) {
@@ -51,9 +55,9 @@ $(document).keyup(function (e) {
             .then(response => response.text())
             .then(text => {
                 let textArray = text.split(" "); //splits .txt file of words by space into an indexed array
-                for (let j = 0; j < sentenceCount; j++) { //determines how many words to add to senteces array
+                for (let j = 0; j < sentenceCount; j++) { //determines how many sentences to add 
                     let sentenceBuidler = [];
-                    for (let index = 0; index < numWords; index++) {
+                    for (let index = 0; index < numWords; index++) { //determines how many words to add per index
                         let randWord = textArray[Math.floor(Math.random() * textArray.length)]; //select random word from dataset
                         randWord.toString();
                         sentenceBuidler.push(randWord);
@@ -73,7 +77,6 @@ $(document).keyup(function (e) {
                         timerBegin(active);
                         
                     }
-                    //$(`#${e.which}`).addClass('highlights'); // Hightlights the key you press on keyboard 
                    
                     // If correct keystroke, the yellow block highlightes the next letter, the letter displayed in #targetLetter 
                     // div goes to the next one in line, and a green check mark is displayed
@@ -88,6 +91,8 @@ $(document).keyup(function (e) {
                             characterCount--;
                             $('#wordCount').html(wordCount);
                         }
+                        targetLetter = sentences[sentenceNumber].charAt(letterNumber);
+                        correctObject(targetLetter, correctLetters)
                         $('#characters').html(characterCount);
                         calculateAccuracy(characterCount, mistakeCount);
                         $('#accuracy').html(accuracyString);
@@ -97,6 +102,8 @@ $(document).keyup(function (e) {
                     else if (e.which !== sentences[sentenceNumber].charCodeAt(letterNumber) && playing === true) {
                         $('#characterHighlight').addClass('red-block'); //highlight turns red
                         mistakeCount++;
+                        targetLetter = sentences[sentenceNumber].charAt(letterNumber);
+                        mistakeObject(targetLetter, errorLetters) //add the missed letter to keep track of errors
                         $('#mistakes').html(mistakeCount);
                         $('#feedback').html('<span class="glyphicon glyphicon-remove"></span>');
                         calculateAccuracy(characterCount, mistakeCount);
@@ -228,21 +235,32 @@ function calculateWPM() {
             if (minutes < 0) {
                 const nominalizedSeconds = seconds / 60;
                 wordsPerMinute = Math.round(numerator / nominalizedSeconds);
+                wpmOverTime.push(wordsPerMinute);
             } else {
                 const totalSeconds = (minutes * 60) + seconds;
                 const nominalizedMinutes = totalSeconds / 60;
                 wordsPerMinute = Math.round(numerator / nominalizedMinutes);
+                wpmOverTime.push(wordsPerMinute)
             }
         }
         $('#wpm').html(wordsPerMinute);
     }
-    wpmInterval = setInterval(calculate, 3000);
+    wpmInterval = setInterval(calculate, 4000);
 }
 
 function stopWpmInterval() {
     clearInterval(wpmInterval);
 }
 
+//if error is not in errors object then add it, else increment it
+function mistakeObject(targetLetter, errorLetters) {
+   typeof errorLetters[targetLetter] === 'undefined' ? errorLetters[targetLetter] = 1 : errorLetters[targetLetter]++;
+}
+
+//if error is not in errors object then add it, else increment it
+function correctObject(targetLetter, correctLetters) {
+    typeof correctLetters[targetLetter] === 'undefined' ? correctLetters[targetLetter] = 1 : correctLetters[targetLetter]++;
+ }
 // Holding 'shift' key down displays uppercase keyboard, otherwise lowercase keyboard is shown
 $(document).keydown(function (e) {
     if (e.which == 16) {
