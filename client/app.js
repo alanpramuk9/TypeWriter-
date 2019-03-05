@@ -21,7 +21,7 @@ let accuracyString = "";
 let targetLetter = '';
 const correctLetters = {}
 const errorLetters = {};
-const wpmOverTime = [];
+const wpmOverTime = new Map();
 
 $('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
 $('#characterHighlight').hide(); //Hide character highlight until game starts
@@ -114,7 +114,7 @@ $(document).keyup(function (e) {
                         $('#characterHighlight').css({'left': '14px', 'top': '+=30px' })
                     }
                 });
-        })
+            })
     }})
 
 
@@ -235,16 +235,16 @@ function timerStop() {
 function calculateWPM() {
     function calculate() {
         if (playing) {
-            const numerator = characterCount / 5;
-            if (minutes < 0) {
-                const nominalizedSeconds = seconds / 60;
+            let numerator = characterCount / 5;
+            if (minutes <= 0) {
+                let nominalizedSeconds = seconds / 60;
                 wordsPerMinute = Math.round(numerator / nominalizedSeconds);
-                wpmOverTime.push(wordsPerMinute);
+                wpmOverTime.set(seconds, wordsPerMinute);
             } else {
-                const totalSeconds = (minutes * 60) + seconds;
-                const nominalizedMinutes = totalSeconds / 60;
+                let totalSeconds = (minutes * 60) + seconds;
+                let nominalizedMinutes = totalSeconds / 60;
                 wordsPerMinute = Math.round(numerator / nominalizedMinutes);
-                wpmOverTime.push(wordsPerMinute)
+                wpmOverTime.set(totalSeconds, wordsPerMinute);
             }
         }
         $('#wpm').html(wordsPerMinute);

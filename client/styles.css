@@ -118,6 +118,9 @@ li > a {
     word-spacing: 2px;
     min-height:75px;
     margin-bottom: 55px;
+    margin: 0 auto;
+    padding: 20px 15px;
+    background-color: lightyellow;
   }
   
   #characterHighlight {

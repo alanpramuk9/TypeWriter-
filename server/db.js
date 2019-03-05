@@ -13,6 +13,7 @@ let getScores = () => {
     return new Promise((resolve, reject) => {
         connection.query(`select * from leaderboard order by wpm desc`, (err, results, fields) => {
             if (err) {
+                console.log(err);
                 reject(err);
             };
             resolve(results);
@@ -26,6 +27,7 @@ let getScore= (id) => {
     return new Promise((resolve, reject) => {
         connection.query(`select * from leaderboard where id = ${id}`, (err, results, fields) => {
             if (err) {
+                console.log(err);
                 reject(err);
             };
             resolve(results);
@@ -39,6 +41,7 @@ let createScore = (name, wpm) => {
     return new Promise((resolve, reject) => {
         connection.query(`INSERT INTO leaderboard (name, wpm) VALUES ("${name}", ${wpm})`, (err, results, fields) => {
             if (err) {
+                console.log(err);
                 reject(err);
             };
             resolve(results);
