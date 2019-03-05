@@ -52,28 +52,15 @@ $(document).keyup(function (e) {
         fetch(textfile)
             .then(response => response.text())
             .then(text => {
-                let textArray = text.split(" "); //splits .txt file of words by space into an indexed array
-                for (let j = 0; j < sentenceCount; j++) { //determines how many sentences to add 
-                    let sentenceBuidler = [];
-                    for (let index = 0; index < numWords; index++) { //determines how many words to add per index
-                        let randWord = textArray[Math.floor(Math.random() * textArray.length)]; //select random word from dataset
-                        randWord.toString();
-                        sentenceBuidler.push(randWord);
-                    }
-                    let tempSentence = sentenceBuidler.join(" "); //join the previous words into a sentence by space
-                    sentences.push(tempSentence); //add this completed sentence to the parsed and final sentence variable
-                }
-                $("#timer").html(minutes + 'm ' + seconds + 's');
-                $('#sentence').append(`<div >${sentences[sentenceNumber]}</div>`);
-                
+                sentenceCreator(text); //creates the sentences 
+                senenteceAppender(sentences, sentenceCount); //append sentences to DOM
                 //Once a key is pressed, the time begins
                 $(document).keypress(function (e) {
                     if (active === false) {
                         playing = true;
                         calculateWPM(playing);
                         active = true;
-                        timerBegin(active);
-                        
+                        timerBegin(active); 
                     }
                    
                     // If correct keystroke, the yellow block highlightes the next letter, the letter displayed in #targetLetter 
@@ -118,20 +105,39 @@ $(document).keyup(function (e) {
                         $('#mistakes').addClass('bolder');
                         $('.submitBtn').removeClass('btn-sm').addClass('btn-lg')
                         $('#feedback').html('<span class="glyphicon glyphicon-off finishedLogo"></span>');
-                        
                     }
                     // Set up the next line of text to appear, and get the yellow highlighted area to follow
                     else if (letterNumber === sentences[sentenceNumber].length) {
                         sentenceNumber++;
                         letterNumber = 0;
                         $('#feedback').empty();
-                        $('#sentence').append(`<div>${sentences[sentenceNumber]}</div>`);
                         $('#characterHighlight').css({'left': '14px', 'top': '+=30px' })
                     }
                 });
         })
     }})
 
+
+function sentenceCreator(text) {
+    let textArray = text.split(" "); //splits .txt file of words by space into an indexed array
+    for (let j = 0; j < sentenceCount; j++) { //determines how many sentences to add 
+        let sentenceBuidler = [];
+        for (let index = 0; index < numWords; index++) { //determines how many words to add per index
+            let randWord = textArray[Math.floor(Math.random() * textArray.length)]; //select random word from dataset
+            randWord.toString();
+            sentenceBuidler.push(randWord);
+        }
+        let tempSentence = sentenceBuidler.join(" "); //join the previous words into a sentence by space
+        sentences.push(tempSentence); //add this completed sentence to the parsed and final sentence variable
+    }
+}
+
+//appends sentences to DOM 
+function senenteceAppender(sentences, sentenceCount) {
+    for(let i =0; i < sentenceCount; i++) {
+        $('#sentence').append(`<div id=${i} class='sentenceContainer'>${sentences[i]}</div>`);
+    }
+}
 //reloads page if play again button is clicked
 $("#reset").click(function () {
     location.reload();
