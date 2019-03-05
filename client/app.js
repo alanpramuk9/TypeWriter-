@@ -1,5 +1,3 @@
-
-
 //game variables to keep track of
 let difficulty = $('.difficulty:checked').val(); //grabs the difficulty level
 let sentenceCount = $(".sentenceInput option:selected").text(); 
@@ -245,7 +243,7 @@ function calculateWPM() {
         }
         $('#wpm').html(wordsPerMinute);
     }
-    wpmInterval = setInterval(calculate, 4000);
+    wpmInterval = setInterval(calculate, 3000);
 }
 
 function stopWpmInterval() {
