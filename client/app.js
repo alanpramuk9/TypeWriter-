@@ -172,8 +172,9 @@ $('#submitIt').on("click", function () {
         }
     
 })
+
 //gets all the scores from the database and appends them to leaderboard id                                                                                                //in dev env: fetch('http://localhost:5500/api/scores') port = process.env.PORT || 5500;
-fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
+fetch(`https://just-my-type-game.herokuapp.com/api/scores`) //fetch(`http://localhost:8080/api/scores`) during production
     .then(function (response) {
         return response.json();
     }).then(function (myJson) {
@@ -182,8 +183,8 @@ fetch(`https://just-my-type-game.herokuapp.com/api/scores`)
             formattedDate = moment(`${myJson[i].created_at}`).utc().format('YYYY-MM-DD'); //formats the mysql timestamp with moment library
             //appends data to leaderbaord
             $('#leaderboard').append(`
-                <div id="leaderboardContainer" style="display: flex; justify-content: space-around; margin: 10px 0px;">
-                    <div> <span id="rank"> ${i}.</span></div>
+                <div id="leaderboardContainer" style="display: flex; justify-content: space-between; margin: 8px 3%;">
+                    <div id="rank"> <span> ${i}.</span></div>
                     <p class="rankInfo">${myJson[i].name}</p>
                     <p class="rankInfo">${myJson[i].wpm}</p>
                     <p class="rankInfo">${formattedDate}</p>

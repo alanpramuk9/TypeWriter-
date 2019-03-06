@@ -103,8 +103,9 @@ li > a {
   font-size: 20px;
 }
 .navbar {
-    margin-bottom: 0px !important;  
-} 
+    margin-bottom: 0px ;  
+}
+.navbar.leaderboard {margin-bottom: 50px !important;} 
 
 * {
     margin: 0;
@@ -213,12 +214,19 @@ li > a {
 
   #leaderboardContainer > p {
     text-align: center;
-
+    margin: 0px -76px 10px;
   }
 
   #rank {
-    font-size: 1.1em
+    font-size: 1.1em;
+    width: 20%;
+    text-align: center;
   }
+  .rankInfo {
+    width: 33%;
+    /* text-align: left; */
+  }
+
   .glyphicon-user,  .glyphicon-log-in {
     font-size: 15px;
   }
