@@ -7,6 +7,9 @@ let connection = mysql.createConnection(
         password: 'e9e18526'
     }
 );
+//db name: heroku_82e517aefa9690e
+// user: 'b72999f7d91c46',
+        // password: 'ab46ff12'
 
 //get all the scores 
 let getScores = () => {

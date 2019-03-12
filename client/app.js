@@ -174,6 +174,7 @@ $('#submitIt').on("click", function () {
             let content = "<div style='text-align:center; margin:10px 0px 0px 0px; color: #d4edda'>Your submission was sent!</div>"
             $('.modal-header').after(content).css({'background-color': '#d4edda', 'color': 'white', 'text-align': 'center' })
             console.log(result);
+            $("#submitIt").attr("disabled", "disabled");
         }).fail((err) => {console.log(err); });
         //alert the user to complete typing game before submission
         } else {
