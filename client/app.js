@@ -1,7 +1,5 @@
 //game variables to keep track of
-let difficulty = $('.difficulty:checked').val(); //grabs the difficulty level
-let sentenceCount = $(".sentenceInput option:selected").text(); 
-let sentences = []; //final array of words to type against
+const sentences = []; //final array of words to type against
 let textfile, numWords;
 let sentenceNumber = 0;
 let characterCount = 0;
@@ -19,9 +17,22 @@ let playing = false;
 let wpmInterval = 0;
 let accuracyString = "";
 let targetLetter = '';
+let complete = false;
+let difficulty = $('.difficulty:checked').val(); //grabs the difficulty level
+let sentenceCount = $("#numSentences option:selected").text(); 
 const correctLetters = {}
 const errorLetters = {};
 const wpmOverTime = new Map();
+
+//jQUERY cache for commonly used DOM manipulations
+const $characterHighlight = $('#characterHighlight');
+const $feedback = $('#feedback');
+const $wordCount = $('#wordCount');
+const $characters = $('#characters');
+const $accuracy = $('#accuracy');
+const $targetLetter = $('#targetLetter');
+const $mistakes = $('#mistakes');
+const $wpm = $('#wpm');
 
 $('#keyboard-upper-container').hide(); //Uppercase keyboard is hidden by default
 $('#characterHighlight').hide(); //Hide character highlight until game starts
@@ -33,7 +44,7 @@ checkWidth();
 $(document).keyup(function (e) {
     if (e.which == 13 && active == false) {
         difficulty = $('.difficulty:checked').val();
-        sentenceCount = $(".sentenceInput option:selected").text(); 
+        sentenceCount = $("#numSentences option:selected").text(); 
         $('#characterHighlight').show(); //highlight target letter
 
         //Longer words require less words to fit to screen width
@@ -61,57 +72,60 @@ $(document).keyup(function (e) {
                         calculateWPM(playing);
                         active = true;
                         timerBegin(active); 
+                        $('#reset').attr("style", "visibility: visible");
                     }
                    
                     // If correct keystroke, the yellow block highlightes the next letter, the letter displayed in #targetLetter 
                     // div goes to the next one in line, and a green check mark is displayed
                     if (e.which === sentences[sentenceNumber].charCodeAt(letterNumber) && playing === true) {
-                        $('#characterHighlight').css('left', '+=13.7px');
-                        $('#feedback').html('<span class="glyphicon glyphicon-ok"></span>');
-                        $('#characterHighlight').removeClass('red-block');
+                        $characterHighlight.css('left', '+=13.7px');
+                        $feedback.html('<span class="glyphicon glyphicon-ok"></span>');
+                        $characterHighlight.removeClass('red-block');
                         letterNumber++;
                         characterCount++;
                         if (e.which == 32) { //if spacebar is pressed, increment word count. Decrement character count
                             wordCount++;
                             characterCount--;
-                            $('#wordCount').html(wordCount);
+                            $wordCount.html(wordCount);
                         }
                         targetLetter = sentences[sentenceNumber].charAt(letterNumber);
                         correctObject(targetLetter, correctLetters)
-                        $('#characters').html(characterCount);
+                        $characters.html(characterCount);
                         calculateAccuracy(characterCount, mistakeCount);
-                        $('#accuracy').html(accuracyString);
-                        $('#targetLetter').text(String.fromCharCode(sentences[sentenceNumber].charCodeAt(letterNumber))); //change target letter for highlight
+                        $accuracy.html(accuracyString);
+                        $targetLetter.text(String.fromCharCode(sentences[sentenceNumber].charCodeAt(letterNumber))); //change target letter for highlight
                     }
                     // if it's the wrong key, a X mark is shown, and a mistake is saved in mistakeCount
                     else if (e.which !== sentences[sentenceNumber].charCodeAt(letterNumber) && playing === true) {
-                        $('#characterHighlight').addClass('red-block'); //highlight turns red
+                        $characterHighlight.addClass('red-block'); //highlight turns red
                         mistakeCount++;
                         targetLetter = sentences[sentenceNumber].charAt(letterNumber);
                         mistakeObject(targetLetter, errorLetters) //add the missed letter to keep track of errors
-                        $('#mistakes').html(mistakeCount);
-                        $('#feedback').html('<span class="glyphicon glyphicon-remove"></span>');
+                        $mistakes.html(mistakeCount);
+                        $feedback.html('<span class="glyphicon glyphicon-remove"></span>');
                         calculateAccuracy(characterCount, mistakeCount);
-                        $('#accuracy').html(accuracyString);
+                        $accuracy.html(accuracyString);
                     }
         
                     //if on last letter of last sentence then end the game
                     if (letterNumber === sentences[sentenceNumber].length && sentenceNumber === sentenceCount -1) {
-                        $('#characterHighlight').hide(); //Hide character highlight until game starts  
-                        $('#wpm').html(wordsPerMinute).addClass('wpmHighlight');
+                        complete = true;
+                        $characterHighlight.hide(); //Hide character highlight until game starts  
+                        $wpm.html(wordsPerMinute).addClass('wpmHighlight');
                         timerStop();
                         stopWpmInterval();
                         playing = false;
-                        $('#mistakes').addClass('bolder');
+                        $mistakes.addClass('bolder');
                         $('.submitBtn').removeClass('btn-sm').addClass('btn-lg')
-                        $('#feedback').html('<span class="glyphicon glyphicon-off finishedLogo"></span>');
+                        $feedback.html('<span class="glyphicon glyphicon-off finishedLogo"></span>');
+                        $('#submit').attr("style", "visibility: visible");
                     }
                     // Set up the next line of text to appear, and get the yellow highlighted area to follow
                     else if (letterNumber === sentences[sentenceNumber].length) {
                         sentenceNumber++;
                         letterNumber = 0;
-                        $('#feedback').empty();
-                        $('#characterHighlight').css({'left': '14px', 'top': '+=30px' })
+                        $feedback.empty();
+                        $characterHighlight.css({'left': '14px', 'top': '+=30px' })
                     }
                 });
             })
@@ -138,10 +152,6 @@ function senenteceAppender(sentences, sentenceCount) {
         $('#sentence').append(`<div id=${i} class='sentenceContainer'>${sentences[i]}</div>`);
     }
 }
-//reloads page if play again button is clicked
-$("#reset").click(function () {
-    location.reload();
-});
 
 //Submits data to database (change url to localhost:8080 if in development environment)
 $('#submitIt').on("click", function () {
@@ -151,7 +161,7 @@ $('#submitIt').on("click", function () {
         wpm: wordsPerMinute
     }
     //if wpm is greater than 0, then submit the score
-    if (wordsPerMinute > 0) {
+    if (complete) {
         $.ajax({
             type: "POST",
             url: 'https://just-my-type-game.herokuapp.com/api/scores',
@@ -173,8 +183,8 @@ $('#submitIt').on("click", function () {
     
 })
 
-//gets all the scores from the database and appends them to leaderboard id                                                                                                //in dev env: fetch('http://localhost:5500/api/scores') port = process.env.PORT || 5500;
-fetch(`https://just-my-type-game.herokuapp.com/api/scores`) //fetch(`http://localhost:8080/api/scores`) during production
+// gets all the scores from the database and appends them to leaderboard id                                                                                                //in dev env: fetch('http://localhost:5500/api/scores') port = process.env.PORT || 5500;
+fetch(`https://just-my-type-game.herokuapp.com/api/scores`) //fetch(`http://localhost:8080/api/scores`) during development
     .then(function (response) {
         return response.json();
     }).then(function (myJson) {
@@ -193,12 +203,6 @@ fetch(`https://just-my-type-game.herokuapp.com/api/scores`) //fetch(`http://loca
         }
     });
 
-//game is only formatted for laptops. Alert warning if screen width less than 1000px
-function checkWidth() {
-    const windowSize = $(window).width();
-    if (windowSize < 1000) 
-        alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels.");
-}
 
 //calculate accuracy % and format it to percentage
 function calculateAccuracy(characterCount, mistakeCount) {
@@ -278,9 +282,18 @@ $(document).keydown(function (e) {
             $('#keyboard-lower-container').show();
         }
     });
-
 });
 
+//reloads page if play again button is clicked
+$("#reset").click(function () {
+    location.reload();
+});
 
+//game is only formatted for laptops. Alert warning if screen width less than 1000px
+function checkWidth() {
+    const windowSize = $(window).width();
+    if (windowSize < 1000) 
+        alert("Please use full screen or zoom out to play the game! Game only works on screens wider the 950 pixels.");
+}
 
 });//end of document.ready
