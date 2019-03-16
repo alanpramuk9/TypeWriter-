@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
 </head>
 
-<!-- I preemptively apoligize for inline styles  -->
-
 <body>
     <!-- navigation bar -->
     <nav class="navbar navbar-inverse">
@@ -31,83 +29,87 @@
             </ul>
         </div>
     </nav>
-    <!-- Configuration Area-->
+    <!------------- Configuration Area ----------------------------------------->
     <section class="mainHeader">
-        <div id="enterContainer">
-            <h4>Press Enter To Begin!</h4>
-        </div>
-        <!-- Button Group -->
+        <div class="directions">
+        <h4>1. Choose a Duration  <span>  # of Sentences || Time </span></h4>
+        <!-- <ul>
+            <li># Sentences</li>
+            <li>Time Limit</li>
+        </ul> -->
+        <h4>2. Choose Character Format <span>   Words || Letters to Practice </span></h4>
+        <h4>3. Press Enter!</h4>
         <div id="buttonGroup">
-            <button type="button" class="btn btn-sma btn-success" id="reset">Play Again</button>
+            <button type="button" class="btn btn-sm btn-success" id="reset">Play Again</button>
             <button type="button" class="btn btn-sm btn-danger" id="submit" data-toggle="modal"
                 data-target="#myModal">Submit Your Score </button>
         </div>
-
+    </div>
         <!-- Stats Container  -->
         <div id="statsContainer">
-            <div class="stats">
-                <div class="statText">
-                    <h5>Time: </h5>
-                    <div id="timer"></div>
-                </div>
-                <div class="statText">
-                    <h5>WPM: </h5>
-                    <div id="wpm"> </div>
-                </div>
-                <div class="statText">
-                    <h5>Accuracy: </h5>
-                    <div>
-                        <span id="accuracy"> </span>
-                    </div>
-                </div>
+            <div class="statText">
+                <h5>Time: </h5>
+                <div id="timer"></div>
+                <audio controls id="timer-beep">
+                    <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/41203/beep.mp3" /> 
+                    <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/41203/beep.ogg" />
+                </audio>
             </div>
-            <div class="stats">
-                <div class="statText">
+            <div class="statText">
+                <h5>WPM: </h5>
+                <div id="wpm"> </div>
+            </div>
+            <div class="statText">
+                <h5>Accuracy: </h5>
+                <span id="accuracy"> </span>
+            </div>
+            <!-- <div class="statText chars">
                     <h5>Characters: </h5>
-                    <div id="characters"> </div>
-                </div>
-                <div class="statText">
-                    <h5>Words: </h5>
-                    <div id="wordCount"> </div>
-                </div>
-                <div class="statText">
-                    <h5>Mistakes: </h5>
-                    <div id="mistakes"> </div>
-                </div>
+                <div id="characters"> </div>
+            </div> -->
+            <div class="statText">
+                <h5>Words: </h5>
+                <div id="wordCount"> </div>
+            </div>
+            <div class="statText">
+                <h5>Mistakes: </h5>
+                <div id="mistakes"> </div>
             </div>
         </div>
     </section>
 
-    <!-- relative postioned container to keep inputs always on the left  -->
+    <!-----------  configuration container --------------------->
     <div class="inputsContainer">
         <h5 id="inputsContainerTitle">Configure Game</h5>
         <hr class="hrConfigure">
         <div class='flexAcross'>
+            <!-- # sentences  -->
             <div class="inline">
                 <label for="sel1">
                     <p># Sentences </p>
                 </label>
-                <select class="form-control input-md sentenceInput" style="width: 100px;"
-                    id="numSentences">
+                <select class="form-control input-md sentenceInput" style="width: 100px;" id="numSentences">
                     <option>2</option>
                     <option>4</option>
                     <option>6</option>
                 </select>
             </div>
-            <!-- time limit container  -->
-            <!-- <div class="inline">
+            <!-- time limit  -->
+            <div class="inline">
                 <label for="sel2">
                     <p>Time Limit</p>
                 </label>
-                <select class="form-control input-md sentenceInput" style="width: 100px;"
-                    id="timeLimit">
-                    <option>1 min</option>
-                    <option>2 min</option>
-                    <option>3 min</option>
-                </select>
-            </div> -->
+                <input list="timeLimit" name="timeLimit" placeholder="Select Time" style="width:100px;">
+                <datalist id="timeLimit">
+                    <option value="30 sec">
+                    <option value="1 min" >
+                    <option value="2 min" >
+                    <option value="3 min" >
+                </datalist>
+            </div>
         </div>
         <div class='flexAcross'>
+            <!-- difficulty  -->
             <div class="inline">
                 <span>Difficulty </span>
                 <span href="#" data-toggle="tooltip" data-placement="top"
@@ -115,35 +117,27 @@
                         class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                 </span>
                 <form>
-                    <input class="difficulty" type="radio" name="difficulty" value="Easy">Easy<br>
-                    <input class="difficulty" type="radio" name="difficulty" value="Medium" checked>Medium<br>
-                    <input class="difficulty" type="radio" name="difficulty" value="Hard"> Hard<br>
+                    <input class="difficulty" id='one' type="checkbox" name="difficulty" value="Easy">Easy<br>
+                    <input class="difficulty" id='two' type="checkbox" name="difficulty" value="Medium">Medium<br>
+                    <input class="difficulty" id='three' type="checkbox" name="difficulty" value="Hard"> Hard<br>
                 </form>
             </div>
-                <!-- <div class="inline">
-                        <p style="display:inline-block; width: 150px">Letters to Practice</p>
-                <div class="input-group row">
-                        <div class="input-group-btn"> 
-                                <button type="button" class="btn btn-default" aria-label="Help">
-                                    <span class="glyphicon glyphicon-question-sign"></span>
-                                </button> 
-                            </div>
-                        <input type="text" class="form-control" id='lettersInput' placeholder="Enter Letters">
-                        
-                </span>
+            <!-- letters input  -->
+            <div class="inline">
+                <p style="display:inline-block; width: 150px">Letters to Practice</p>
+                <div class="input-group">
+                    <input type="text" name="letters" class="form-control" id="lettersInput" placeholder="Enter Letters" maxlength="7">
                 </div>
-                </div> -->
-        </div>
+            </div>
+        </div>  
     </div>
 
-    <!-- Section under the stats. JS will dynamically update these containers with the data -->
+    <!-- Sentence Input Container -->
     <div class="containermain main" id="target">
         <div class="row col-md-11" id="prompt-container">
             <div class="row col-xs-11" id="characterHighlight"></div>
-            <div class="row col-11" id="sentence">
-            </div>
-            <div class="row col-lg-11 text-center" id="feedback">
-            </div>
+            <div class="row col-11" id="sentence"></div>
+            <div class="row col-lg-11 text-center" id="feedback"></div>
             <div class="row col-lg-11 text-center" id="target-letter">
             </div>
         </div>
@@ -288,7 +282,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" id="submitIt">Submit</button>
-
                 </div>
             </div>
         </div>

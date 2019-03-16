@@ -30,34 +30,39 @@ nav.navbar.navbar-inverse {
 }
 
 .mainHeader {
-  width:100%; height: 250px;  
+  width:100%; height: 275px;  
   background-color:#DDDDDD; 
   margin-bottom:30px;
+  padding:30px;
 }
-#enterContainer {
+
+.directions > h4 {
   display:flex; justify-content: center; 
   position: relative; top: 5px;
-} 
-#enterContainer > h4 {
   margin-top:10px; font-weight: 800; text-align: center; color: #024F6D
 }
+
+.directions {display:flex; flex-direction: column;justify-content:left}
+.directions > h4 span {margin-left:8px; padding-top:2px; color: rgb(80, 133, 154);}
 
 #buttonGroup {
   display: flex; margin: 10px auto; justify-content: center;
   visibility: hidden;
 }
 #buttonGroup > button { margin-left: 30px;}
-#statsContainer { display: flex; justify-content: center }
+#statsContainer { 
+  display: flex; justify-content: space-evenly;
+  width: 50%;
+  margin: 0 auto; }
 
-#statsContainer .stats { 
-  display:flex; justify-content: space-evenly; 
-  height:75px; min-width: 30%
-}
-#statsContainer .stats .statText { 
+
+#statsContainer .statText { 
   display:flex; flex-direction: column;
 }
 .statText > h5 {text-decoration: underline;}
 #prompt-container { font-family: Courier New, Courier, monospace; font-size: 24px; letter-spacing: 3px; }
+
+#timer-beep {position: absolute; top: -100000em; }
 
 .redbtn { color: #fff !important; background-color: #d9534f !important; border-color: #d43f3a !important; }
 .main {
@@ -88,8 +93,8 @@ li a:hover {
   background-color: #BA0C2F;
   left: 0;
   margin-left: 20px;
-  top: -258px;
-  height: 214px;
+  top: -294px;
+  height: 250px;
   width: 291px;
     
 }
@@ -98,7 +103,7 @@ li a:hover {
   justify-content: center;
 }
 
-#lettersInput {padding: 6px; height: 34px;}
+#lettersInput {padding: 6px; height: 34px; font-size: 12px}
 
 .inputsContainer p {font-size: 1em; margin: 0 auto 2px;}
 
@@ -170,6 +175,8 @@ span, form {font-size: 14px;}
   /* margin-right:15px; */
  }
 
+ input:hover {color:black}
+ input {color:black}
  #inputsContainerTitle {
   text-align: center;margin-right: 23px;
   color: white;
